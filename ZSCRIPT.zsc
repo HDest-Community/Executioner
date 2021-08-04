@@ -196,6 +196,7 @@ class HDDefiler : HDWeaponGrabber
 		+WEAPON.NO_AUTO_SWITCH
 		+FORCEPAIN
 		+HDWEAPON.DONTDISARM
+		+HDWEAPON.DONTNULL
 		Obituary "%o got %p blood drained by %k.";
 		Inventory.PickupMessage "Picked up the the demon knife.";
 		Weapon.SelectionOrder 100;
@@ -251,7 +252,7 @@ class HDDefiler : HDWeaponGrabber
 					invoker.bUNTOSSABLE = false;
 					plr.A_StartSound("misc/bulletflesh", CHAN_AUTO);
 					A_MuzzleClimb(frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(0.0, 1.0));
-					plr.woundcount += 5;
+					plr.woundcount += 3;
 				}
 			}
 			Goto ReadyEnd;
@@ -358,14 +359,14 @@ class HDDefiler : HDWeaponGrabber
 					invoker.WeaponStatus[DFProp_Blood] -= MinCharge;
 				}
 
-				int toFeed = random(25, 50);
-				invoker.WeaponStatus[DFProp_Hunger] = max(-300, invoker.WeaponStatus[DFProp_Hunger] - toFeed / 2);
-				plr.bloodloss += toFeed * (plr.regenblues > 20 ? 15 : 5);
+				int toFeed = random(120, 160);
+				invoker.WeaponStatus[DFProp_Hunger] = max(-300, invoker.WeaponStatus[DFProp_Hunger] - toFeed);
+				plr.bloodloss += toFeed * (plr.regenblues > 20 ? 3 : 1);
 
 				int toInflict = random(5, random(5, 10 + (!random(0, 2) ? 10 : 0)));
 				if (plr.regenblues > 20)
 				{
-					toInflict *= 6;
+					toInflict *= 3;
 				}
 				plr.woundcount += toInflict;
 			}
