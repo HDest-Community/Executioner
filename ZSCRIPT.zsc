@@ -428,9 +428,9 @@ class DefilerHealing : Powerup
 
 		plr.beatmax = min(plr.beatmax, 10);
 		plr.bloodpressure = max(plr.bloodpressure, 80);
-		if (plr && plr.beatcount == 0 && plr.Health < plr.MaxHealth())
+		if (plr && plr.beatcount == 0)
 		{
-			plr.GiveBody(5);
+			plr.GiveBody(5, plr.MaxHealth());
 		}
 	}
 
