@@ -170,7 +170,7 @@ class HDDefiler : HDWeaponGrabber
 		if (pActor is 'HDHumanoid')
 		{
 			invoker.WeaponStatus[DFProp_Blood] = int(min(invoker.WeaponStatus[DFProp_Blood] + dmg / 30, MinCharge * 2));
-			invoker.WeaponStatus[DFProp_Hunger] = max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - random(50, 75));
+			invoker.WeaponStatus[DFProp_Hunger] = max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - random(150, 200));
 			invoker.Bloodied = true;
 			A_CheckKnifeFrame();
 		}
@@ -360,7 +360,7 @@ class HDDefiler : HDWeaponGrabber
 					invoker.WeaponStatus[DFProp_Blood] -= MinCharge;
 				}
 
-				int toFeed = random(150, 200);
+				int toFeed = random(500, 600);
 				invoker.WeaponStatus[DFProp_Hunger] = max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - toFeed);
 				plr.bloodloss += toFeed * (plr.regenblues > 20 ? 3 : 1);
 
