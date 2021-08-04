@@ -359,7 +359,7 @@ class HDDefiler : HDWeaponGrabber
 				}
 
 				int toFeed = random(25, 50);
-				invoker.WeaponStatus[DFProp_Hunger] = max(-300, invoker.WeaponStatus[DFProp_Hunger] - toFeed);
+				invoker.WeaponStatus[DFProp_Hunger] = max(-300, invoker.WeaponStatus[DFProp_Hunger] - toFeed / 2);
 				plr.bloodloss += toFeed * (plr.regenblues > 20 ? 15 : 5);
 
 				int toInflict = random(5, random(5, 10 + (!random(0, 2) ? 10 : 0)));
