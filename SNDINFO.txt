@@ -1,0 +1,6 @@
+Defiler/WallImpact1 DFLRHIT1
+Defiler/WallImpact2 DFLRHIT1
+Defiler/Stabbity DFLRFLSH
+Defiler/Chant DFLRCHNT
+$random Defiler/WallImpact { Defiler/WallImpact1 Defiler/WallImpact2 }
+$limit Defiler/WallImpact 0
