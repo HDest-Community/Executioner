@@ -106,13 +106,13 @@ class HDDefiler : HDWeaponGrabber
 	action void A_Stab(double dmg)
 	{
 		FLineTraceData data;
-		bool hasPunched = LineTrace(angle, 48, pitch, TRF_NOSKY, offsetz: height - 12, data: data);
-		if (!hasPunched)
+		bool hasStabbed = LineTrace(angle, 56, pitch, TRF_NOSKY, offsetz: height - 12, data: data);
+		if (!hasStabbed)
 		{
 			return;
 		}
 
-		LineAttack(angle, 48, pitch, data.HitLine ? (CheckInventory('PowerStrength', 1) ? random(50, 120) : random(5, 15)) : 0, "None", CheckInventory('PowerStrength', 1) ? 'DefilerPuffBig' : 'DefilerPuffSmall', flags: LAF_NORANDOMPUFFZ | LAF_OVERRIDEZ, offsetz: height - 12);
+		LineAttack(angle, 56, pitch, data.HitLine ? (CheckInventory('PowerStrength', 1) ? random(50, 120) : random(5, 15)) : 0, "None", CheckInventory('PowerStrength', 1) ? 'DefilerPuffBig' : 'DefilerPuffSmall', flags: LAF_NORANDOMPUFFZ | LAF_OVERRIDEZ, offsetz: height - 12);
 
 		if (!data.HitActor)
 		{
