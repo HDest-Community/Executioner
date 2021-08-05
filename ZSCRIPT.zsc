@@ -201,6 +201,7 @@ class HDDefiler : HDWeaponGrabber
 		+HDWEAPON.DONTNULL
 		Obituary "%o got %p blood drained by %k.";
 		Inventory.PickupMessage "Picked up the the demon knife.";
+		Inventory.PickupSound "weapons/pocket";
 		Weapon.SelectionOrder 100;
 		Weapon.Kickback 50;
 		Weapon.BobStyle "Alpha";
