@@ -21,7 +21,7 @@ class DefilerHandler : EventHandler
 	}
 }
 
-class HDDefiler : HDWeaponGrabber
+class HDDefiler : HDWeapon
 {
 	enum DefilerProperties
 	{
@@ -168,7 +168,7 @@ class HDDefiler : HDWeaponGrabber
 			pActor.A_StartSound("Defiler/Stabbity", CHAN_AUTO);
 		}
 
-		if (pActor is 'HDHumanoid')
+		if (pActor is 'HDHumanoid' && pActor.Health > 0)
 		{
 			invoker.WeaponStatus[DFProp_Blood] = int(min(invoker.WeaponStatus[DFProp_Blood] + dmg / 30, MinCharge * 2));
 			invoker.WeaponStatus[DFProp_Hunger] = max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - random(150, 200));
