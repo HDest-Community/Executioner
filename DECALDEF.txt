@@ -2,7 +2,7 @@ decal DefilerSlashSmallBlack
 {
 	pic SSLASH1
 	shade "00 00 00"
-	x-scale 0.04
+	x-scale 0.005
 	y-scale 0.04
 }
 
@@ -10,7 +10,7 @@ decal DefilerSlashSmall
 {
 	pic SSLASH1
 	shade "FF 11 11"
-	x-scale 0.03
+	x-scale 0.003
 	y-scale 0.03
 	Fullbright
 	animator GoAway
@@ -21,7 +21,7 @@ decal DefilerSlashBigBlack
 {
 	pic SSLASH1
 	shade "00 00 00"
-	x-scale 0.06
+	x-scale 0.007
 	y-scale 0.06
 }
 
@@ -29,7 +29,7 @@ decal DefilerSlashBig
 {
 	pic SSLASH1
 	shade "FF 11 11"
-	x-scale 0.05
+	x-scale 0.005
 	y-scale 0.05
 	Fullbright
 	animator GoAway
