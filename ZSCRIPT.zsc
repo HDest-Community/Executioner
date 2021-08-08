@@ -53,6 +53,9 @@ class HDDefiler : HDWeapon
 			{
 				if (--ChantTicker <= 0)
 				{
+					plr.A_SetBlend("7a 3a 18", 0.2, 4);
+					plr.A_MuzzleClimb((0, frandom(1.0, 1.5)), (0, 0), (0, 0), (0, 0));
+					plr.A_StartSound(plr.medsound, CHAN_VOICE);
 					plr.A_StartSound("Defiler/Chant", 20, CHANF_LOCAL, 0.5, pitch: frandom(0.75, 1.3));
 					ChantTicker = 120;
 				}
@@ -80,7 +83,7 @@ class HDDefiler : HDWeapon
 		sb.DrawRect(-23, -17, -13, 5);
 		sb.DrawRect(-36, -16, -2, 3);
 		sb.DrawRect(-38, -15, -2, 1);
-		sb.DrawWepNum(hdw.WeaponStatus[DFProp_Blood], MinCharge);
+		sb.DrawWepNum(hdw.WeaponStatus[DFProp_Blood], MaxCharge);
 	}
 
 	action void A_Lunge()
@@ -173,8 +176,9 @@ class HDDefiler : HDWeapon
 
 		if (pActor is 'HDHumanoid' && pActor.Health > 0)
 		{
-			invoker.WeaponStatus[DFProp_Blood] = int(min(invoker.WeaponStatus[DFProp_Blood] + dmg / 30, MinCharge * 2));
-			invoker.WeaponStatus[DFProp_Hunger] = max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - random(150, 200));
+			bool overfed = invoker.WeaponStatus[DFProp_Hunger] < 0;
+			invoker.WeaponStatus[DFProp_Blood] = int(min(invoker.WeaponStatus[DFProp_Blood] + dmg / (overfed ? 20 : 30), MaxCharge));
+			invoker.WeaponStatus[DFProp_Hunger] = int(max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - dmg * (overfed ? 1 : 2)));
 			invoker.Bloodied = true;
 			A_CheckKnifeFrame();
 		}
@@ -189,7 +193,7 @@ class HDDefiler : HDWeapon
 		psp.frame = int(invoker.Bloodied);
 	}
 
-	const MinCharge = 50;
+	const MaxCharge = 50;
 	const TimeToEat = 900;
 	private bool HasAttacked;
 	private bool Bloodied;
@@ -374,15 +378,15 @@ class HDDefiler : HDWeapon
 				A_CheckKnifeFrame();
 				let plr = HDPlayerPawn(self);
 				plr.A_SetBlend("7a 3a 18", 0.2, 4);
-				plr.A_SetPitch(plr.pitch + 10, SPF_INTERPOLATE);
+				A_MuzzleClimb(0, frandom(1.0, 1.5));
 				plr.A_StartSound("Defiler/Stabbity", CHAN_WEAPON);
 				plr.A_StartSound("Defiler/Stabbity", CHAN_WEAPON, CHANF_OVERLAP);
 				plr.A_StartSound(plr.medsound, CHAN_VOICE);
-				if (invoker.WeaponStatus[DFProp_Blood] >= MinCharge)
+				if (invoker.WeaponStatus[DFProp_Blood] >= MaxCharge)
 				{
 					plr.A_GiveInventory("DefilerHealing");
-					plr.GiveBody(min(invoker.WeaponStatus[DFProp_Blood] / 2, MinCharge));
-					invoker.WeaponStatus[DFProp_Blood] -= MinCharge;
+					plr.GiveBody(min(invoker.WeaponStatus[DFProp_Blood] / 2, MaxCharge));
+					invoker.WeaponStatus[DFProp_Blood] -= MaxCharge;
 				}
 
 				int toFeed = random(500, 600);
