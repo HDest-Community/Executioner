@@ -125,22 +125,21 @@ class HDDefiler : HDWeapon
 		Actor pActor = data.HitActor;
 		dmg += HDMath.TowardsEachOther(self, pActor) * 2;
 
-		let plr = HDPlayerPawn(self);
-		if (plr)
+		int hswing = player.cmd.yaw >> 5;
+		int vswing = player.cmd.pitch >> 6;
+		if (hswing <= 0 && vswing != 0)
 		{
-			int extra = player.cmd.yaw >> 5;
-			if (extra < 0)
-			{
-				dmg += min(abs(extra), dmg * 2);
-				if (floorz < pos.z)
-				{
-					dmg *= 0.5;
-				}
-			}
+			dmg += min(max(abs(hswing), abs(vswing)), dmg * 2);
+		}
+
+		if (floorz < pos.z)
+		{
+			dmg *= 0.5;
 		}
 
 		dmg *= frandom(0.7, 1.2);
 
+		let plr = HDPlayerPawn(self);
 		if (plr && !pActor.bDONTTHRUST && (pActor.mass < 200 || pActor.radius * 2 < pActor.Height && data.HitLocation.z > pActor.pos.z + pActor.Height * 0.6))
 		{
 			double iyaw = player.cmd.yaw * (65535.0 / 360.0);
