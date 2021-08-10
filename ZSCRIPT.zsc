@@ -206,7 +206,6 @@ class HDDefiler : HDWeapon
 		+WEAPON.NO_AUTO_SWITCH
 		+FORCEPAIN
 		+HDWEAPON.DONTDISARM
-		+HDWEAPON.DONTNULL
 		+AMBUSH
 		Obituary "%o got %p blood drained by %k.";
 		Inventory.PickupMessage "Picked up the the demon knife.";
