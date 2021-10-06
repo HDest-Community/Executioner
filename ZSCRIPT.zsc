@@ -12,7 +12,7 @@ class DefilerHandler : EventHandler
 		switch (e.Replacement.GetClassName())
 		{
 			case 'Lumberjack':
-				if (random[defrand]() <= 48)
+				if (random[defrand]() <= 64)
 				{
 					e.Replacement = "HDDefiler";
 				}
