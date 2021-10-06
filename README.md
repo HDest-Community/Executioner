@@ -5,7 +5,7 @@
 - Hunger and siphoned blood are tracked separately. How much blood is siphoned per attack depends on the damage. Same with hunger - the more damage you inflict, the more hunger you satiate.
 - You can overfeed the blade. If overfed, more blood goes towards the siphoning.
 - You can "dry" stab yourself even if the knife isn't charged to feed it as a last resort if there are no humanoid enemies around. It gives it much more blood, but doesn't charge it, and the penalties are greater if you have blues.
-- Equipping the knife while you have zerk makes spikes come out of the handle and impale your hand, locking it in place. For the duration of the zerk, you cannot deselect the weapon, nor can you drop it.
+- Equipping the knife while you have zerk makes spikes come out of the handle and impale your hand, locking it in place. For the duration of the zerk, you cannot toss the weapon, but you can switch to something else.
 
 ### How it works
 ---

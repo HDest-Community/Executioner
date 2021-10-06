@@ -240,10 +240,6 @@ class HDDefiler : HDWeapon
 				{
 					flgs |= WRF_NOFIRE;
 				}
-				if (invoker.bUNTOSSABLE)
-				{
-					flgs |= WRF_DISABLESWITCH;
-				}
 				A_WeaponReady(flgs);
 
 				let psp = player.GetPSprite(PSP_WEAPON);
