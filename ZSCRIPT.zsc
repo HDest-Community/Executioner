@@ -430,7 +430,7 @@ class HDDefiler : HDWeapon
 				LineTrace(angle, radius * 1.6, 0, Offsetz: 10, data: data);
 				if (data.HitActor)
 				{
-					HDFist.Kick(self, data.HitActor, invoker);
+					HDPlayerPawn(self).Kick(data.HitActor, invoker);
 				}
 				if (CheckInventory('PowerStrength', 1))
 				{
