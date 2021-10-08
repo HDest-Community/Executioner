@@ -415,10 +415,12 @@ class HDDefiler : HDWeapon
 					plr.GiveBody(MaxCharge);
 					invoker.WeaponStatus[DFProp_Blood] -= MaxCharge;
 				}
-
-				int toFeed = random(500, 600);
-				invoker.WeaponStatus[DFProp_Hunger] = max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - toFeed);
-				plr.bloodloss += toFeed * (plr.regenblues > 30 ? 2 : 1);
+				else
+				{
+					int toFeed = random(500, 600);
+					invoker.WeaponStatus[DFProp_Hunger] = max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - toFeed);
+					plr.bloodloss += toFeed * (plr.regenblues > 30 ? 2 : 1);
+				}
 
 				int toInflict = random(5, random(5, 10 + (!random(0, 2) ? 10 : 0)));
 				if (plr.regenblues > 30)
