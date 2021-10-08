@@ -220,7 +220,7 @@ class HDDefiler : HDWeapon
 
 	private action bool A_IsValidTarget(Actor a)
 	{
-		return a is 'HDHumanoid' && a.Health > 0 && Distance3D(a) < HDCONST_ONEMETRE * 10;
+		return a is 'HDHumanoid' && a.Health > 0 && Distance3D(a) < HDCONST_ONEMETRE * 10 && !a.bFRIENDLY;
 	}
 
 	const MaxCharge = 50;
