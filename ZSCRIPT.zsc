@@ -248,7 +248,7 @@ class HDDefiler : HDWeapon
 		Weapon.BobRangeX 0.1;
 		Weapon.BobRangeY 0.5;
 		Weapon.SlotNumber 1;
-		Weapon.SlotPriority 0;
+		Weapon.SlotPriority 2;
 		Scale 0.3;
 		Tag "Defiler";
 		HDWeapon.Refid "dfl";
