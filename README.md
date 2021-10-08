@@ -10,5 +10,5 @@
 ### How it works
 ---
 - Stabbing humanoids charges the blade and feeds it, reducing its overall hunger.
-- Once the bar is full, you can stab yourself to activate the knife's powers. You will bleed, but also gain rapid health regeneration for 20 seconds. This will also feed the blade.
+- Once the bar is full, you can stab yourself to activate the knife's powers. You will bleed, but also gain rapid health regeneration for 30 seconds. This will also feed the blade.
 - The hungrier it gets, the faster you will lose blood. You cannot drop it once it starts feeding on you.

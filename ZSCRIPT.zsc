@@ -169,21 +169,58 @@ class HDDefiler : HDWeapon
 	private action void A_HighlightTarget()
 	{
 		Actor a = AimTarget();
-		if (a is 'HDHumanoid')
+		if (A_IsValidTarget(a))
 		{
-			a.A_SpawnParticle(0xFFFF00, SPF_FULLBRIGHT | SPF_RELATIVE, 1, 8, 0);
+			for (int i = 0; i < 2; ++i)
+			{
+				a.A_SpawnParticle("DarkRed", SPF_RELATIVE | SPF_FULLBRIGHT, random(20, 35), random(4, 12), random(0, 360), random(-16, 16), 0, height + 5 + random(8, -8), 0, 0, frandom(-1.0, -3.0), 0, 0, -0.3);
+			}
 		}
 	}
 
 	private action void A_Assassinate()
 	{
-		
+		Actor a = AimTarget();
+		if (!A_IsValidTarget(a))
+		{
+			return;
+		}
+
+		vector3 oldPos = pos;		
+		if (Warp(a, -(a.radius + radius + 4), 0, 0, 0, WARPF_INTERPOLATE))
+		{
+			double newAngle = angle;
+			double newPitch = pitch;
+			vector3 newPos = pos;
+
+			SetXYZ(oldPos);
+			A_Face(a, 0, 0);
+
+			// [Ace] And now we do a little hacking. I can't into vector math.
+			A_RailAttack(0, 0, 0, "", "", RGF_SILENT | RGF_NOPIERCING | RGF_CENTERZ, 1.0, null, spawnclass: 'DefilerTrailParticleSpawner');
+
+			SetXYZ(newPos);
+			angle = newAngle;
+			pitch = newPitch;
+
+			let plr = HDPlayerPawn(self);
+			plr.bloodloss += 50;
+
+			A_StartSound("Defiler/Assassinate", 7);
+			invoker.Assassination = true;
+			SetWeaponState('Fire');
+		}
 	}
 
 	private action void A_CheckKnifeFrame()
 	{
 		let psp = player.GetPSprite(PSP_WEAPON);
 		psp.frame = int(invoker.Bloodied);
+	}
+
+	private action bool A_IsValidTarget(Actor a)
+	{
+		return a is 'HDHumanoid' && a.Health > 0 && Distance3D(a) < HDCONST_ONEMETRE * 10;
 	}
 
 	const MaxCharge = 50;
@@ -284,11 +321,12 @@ class HDDefiler : HDWeapon
 				invoker.HasAttacked = true;
 				A_OverlayRotate(PSP_WEAPON, 0);
 				A_WeaponOffset(60, 0, WOF_KEEPY);
-				bool success = A_Stab(CheckInventory('PowerStrength', 1) ? 150 : 40);
+				bool success = A_Stab((CheckInventory('PowerStrength', 1) ? 150 : 40) * (invoker.Assassination ? 4 : 1));
 				if (success)
 				{
 					SetWeaponState('Stab');
 				}
+				invoker.Assassination = false;
 			}
 			#### # 1
 			{
@@ -311,7 +349,7 @@ class HDDefiler : HDWeapon
 				A_OverlayRotate(PSP_WEAPON, 0);
 				A_WeaponOffset(0, 0, WOF_KEEPY);
 			}
-			Goto FireFinish;
+			Goto Ready;
 		Stab:
 			#### # 1
 			{
@@ -329,16 +367,13 @@ class HDDefiler : HDWeapon
 				A_OverlayRotate(PSP_WEAPON, 0);
 				A_WeaponOffset(25, 0, WOF_KEEPY);
 			}
-			Goto FireFinish;
-		
-		FireFinish:
 			#### # 0 A_WeaponBusy(false);
-			#### # 0 A_JumpIf(PressingAltFire(), "AltFire");
 			Goto Ready;
+			
 		AltFire:
 			#### # 0 A_JumpIf(PressingZoom(), 'Sudoku');
-			#### # 1 A_Assassinate();
-			Goto Stab;
+			#### # 0 A_Assassinate();
+			Goto Fire;
 		Sudoku:
 			#### # 1;
 			#### # 0
@@ -422,14 +457,14 @@ class DefilerHealing : Powerup
 		plr.bloodpressure = max(plr.bloodpressure, 50);
 		if (plr && plr.beatcount == 0)
 		{
-			plr.GiveBody(5, plr.MaxHealth());
+			plr.GiveBody(3, plr.MaxHealth());
 		}
 	}
 
 	Default
 	{
 		+INVENTORY.ALWAYSPICKUP
-		Powerup.Duration -20;
+		Powerup.Duration -30;
 	}
 }
 
@@ -460,5 +495,24 @@ class DefilerPuffBig : DefilerPuffBase
 	Default
 	{
 		Decal "DefilerSlashBig";
+	}
+}
+
+class DefilerTrailParticleSpawner : Actor
+{
+	Default
+	{
+		+NOBLOCKMAP
+		+NOINTERACTION
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 1 NoDelay
+			{
+				A_SpawnParticle(0xFF0000, SPF_RELATIVE | SPF_FULLBRIGHT, random(35, 60), frandom(2.0, 5.0), 0, 0, random(-10, 10), random(-20, 20), frandom(-0.1, 0.1), frandom(-0.5, 0.5), frandom(-0.5, 0.5), 0, frandom(-0.01, 0.01), frandom(-0.01, 0.01));
+			}
+			Stop;
 	}
 }

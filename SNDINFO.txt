@@ -4,3 +4,6 @@ Defiler/Stabbity DFLRFLSH
 Defiler/Chant DFLRCHNT
 $random Defiler/WallImpact { Defiler/WallImpact1 Defiler/WallImpact2 }
 $limit Defiler/WallImpact 0
+
+// [Ace] Lord knows I'd defile *that* ass.
+Defiler/Assassinate DFLRASS
