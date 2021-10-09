@@ -3,3 +3,6 @@ Code:
 
 Sprites:
 - Mor'ladim
+
+Sounds:
+- Swinging: CoD Black Ops Declassified (https://www.sounds-resource.com/playstation_vita/callofdutyblackopsdeclassified/sound/21685/)

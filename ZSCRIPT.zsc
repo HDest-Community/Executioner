@@ -312,6 +312,7 @@ class HDDefiler : HDWeapon
 				A_CheckKnifeFrame();
 				A_GiveInventory('DefilerPassiveSpeed');
 				A_GiveInventory('DefilerPassiveInvisibility');
+				A_StartSound("Defiler/Unsheathe", CHAN_WEAPON);
 			}
 			DFLR # 1 A_Raise(16);
 			Wait;
@@ -332,6 +333,7 @@ class HDDefiler : HDWeapon
 			#### # 0 A_WeaponBusy(true);
 			#### # 1
 			{
+				A_StartSound("Defiler/Swing", CHAN_WEAPON);
 				invoker.HasAttacked = true;
 				A_OverlayRotate(PSP_WEAPON, 0);
 				A_WeaponOffset(60, 0, WOF_KEEPY);

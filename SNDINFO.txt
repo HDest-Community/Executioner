@@ -7,3 +7,6 @@ $limit Defiler/WallImpact 0
 
 // [Ace] Lord knows I'd defile *that* ass.
 Defiler/Assassinate DFLRASS
+
+Defiler/Unsheathe DFLROUT
+Defiler/Swing DFLRSWNG
