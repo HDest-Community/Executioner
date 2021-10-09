@@ -113,18 +113,18 @@ class HDDefiler : HDWeapon
 		dmg += HDMath.TowardsEachOther(self, pActor) * 2;
 
 		int hswing = player.cmd.yaw >> 5;
-		int vswing = player.cmd.pitch >> 6;
-		if (hswing <= 0 && vswing != 0)
+		int vswing = player.cmd.pitch >> 5;
+		if (hswing <= 0)
 		{
 			dmg += min(max(abs(hswing), abs(vswing)), dmg * 2);
 		}
 
-		if (floorz < pos.z)
+		if (pos.z > floorz)
 		{
 			dmg *= 0.5;
 		}
 
-		dmg *= frandom(0.7, 1.2);
+		dmg *= frandom(0.9, 1.2);
 
 		let plr = HDPlayerPawn(self);
 		if (plr && !pActor.bDONTTHRUST && (pActor.mass < 200 || pActor.radius * 2 < pActor.Height && data.HitLocation.z > pActor.pos.z + pActor.Height * 0.6))
@@ -337,7 +337,7 @@ class HDDefiler : HDWeapon
 				invoker.HasAttacked = true;
 				A_OverlayRotate(PSP_WEAPON, 0);
 				A_WeaponOffset(60, 0, WOF_KEEPY);
-				bool success = A_Stab((CheckInventory('PowerStrength', 1) ? 150 : 40) * (invoker.Assassination ? 4 : 1));
+				bool success = A_Stab((CheckInventory('PowerStrength', 1) ? 150 : 60) * (invoker.Assassination ? 4 : 1));
 				if (success)
 				{
 					SetWeaponState('Stab');
