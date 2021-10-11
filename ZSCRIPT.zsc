@@ -163,8 +163,8 @@ class HDDefiler : HDWeapon
 		if (pActor is 'HDHumanoid' && pActor.Health > 0)
 		{
 			bool overfed = invoker.WeaponStatus[DFProp_Hunger] < 0;
-			invoker.WeaponStatus[DFProp_Blood] = int(min(invoker.WeaponStatus[DFProp_Blood] + dmg / (overfed ? 20 : 30), MaxCharge));
-			invoker.WeaponStatus[DFProp_Hunger] = int(max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - dmg * (overfed ? 1 : 2)));
+			invoker.WeaponStatus[DFProp_Blood] = int(min(invoker.WeaponStatus[DFProp_Blood] + dmg / (overfed ? 30 : 40), MaxCharge));
+			invoker.WeaponStatus[DFProp_Hunger] = int(max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - dmg * (overfed ? 0.5 : 1.0)));
 			invoker.Bloodied = true;
 			A_CheckKnifeFrame();
 		}
@@ -433,7 +433,7 @@ class HDDefiler : HDWeapon
 				}
 				else
 				{
-					int toFeed = random(500, 600);
+					int toFeed = random(200, 300);
 					invoker.WeaponStatus[DFProp_Hunger] = max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - toFeed);
 					plr.bloodloss += toFeed * (plr.regenblues > 30 ? 2 : 1);
 				}
