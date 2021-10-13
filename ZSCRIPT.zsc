@@ -175,33 +175,35 @@ class HDDefiler : HDWeapon
 
 	private action void A_HighlightTarget()
 	{
-		Actor a = AimTarget();
-		if (A_IsValidTarget(a))
+		FLineTraceData data;
+		LineTrace(angle, HDCONST_ONEMETRE * 15, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
+		if (A_IsValidTarget(data.HitActor))
 		{
 			for (int i = 0; i < 2; ++i)
 			{
-				a.A_SpawnParticle("DarkRed", SPF_RELATIVE | SPF_FULLBRIGHT, random(20, 35), random(4, 12), random(0, 360), random(-16, 16), 0, height + 5 + random(8, -8), 0, 0, frandom(-1.0, -3.0), 0, 0, -0.3);
+				data.HitActor.A_SpawnParticle("DarkRed", SPF_RELATIVE | SPF_FULLBRIGHT, random(20, 35), random(4, 12), random(0, 360), random(-16, 16), 0, height + 5 + random(8, -8), 0, 0, frandom(-1.0, -3.0), 0, 0, -0.3);
 			}
 		}
 	}
 
 	private action void A_Assassinate()
 	{
-		Actor a = AimTarget();
-		if (!A_IsValidTarget(a))
+		FLineTraceData data;
+		LineTrace(angle, HDCONST_ONEMETRE * 15, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
+		if (!A_IsValidTarget(data.HitActor))
 		{
 			return;
 		}
 
 		vector3 oldPos = pos;		
-		if (Warp(a, -(a.radius + radius + 4), 0, 0, 0, WARPF_INTERPOLATE))
+		if (Warp(data.HitActor, -(data.HitActor.radius + radius + 4), 0, 0, 0, WARPF_INTERPOLATE))
 		{
 			double newAngle = angle;
 			double newPitch = pitch;
 			vector3 newPos = pos;
 
 			SetXYZ(oldPos);
-			A_Face(a, 0, 0);
+			A_Face(data.HitActor, 0, 0);
 
 			// [Ace] And now we do a little hacking. I can't into vector math.
 			A_RailAttack(0, 0, 0, "", "", RGF_SILENT | RGF_NOPIERCING | RGF_CENTERZ, 1.0, null, spawnclass: 'DefilerTrailParticleSpawner');
