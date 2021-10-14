@@ -434,6 +434,7 @@ class HDDefiler : HDWeapon
 				{
 					plr.A_GiveInventory("DefilerHealing");
 					plr.GiveBody(MaxCharge);
+					plr.aggravateddamage = int(plr.aggravateddamage * 0.75);
 					invoker.WeaponStatus[DFProp_Blood] -= MaxCharge;
 				}
 				else
