@@ -59,7 +59,15 @@ class HDDefiler : HDWeapon
 					plr.A_StartSound("Defiler/Chant", 20, CHANF_LOCAL, 0.5, pitch: frandom(0.75, 1.3));
 					ChantTicker = 120;
 				}
-				plr.bloodloss += ((WeaponStatus[DFProp_Hunger] - TimeToEat) / 20) * (plr.regenblues > 0 ? 2 : 1);
+				if (WeaponStatus[DFProp_Blood] > 0)
+				{
+					WeaponStatus[DFProp_Hunger] -= DFProp_Blood * 4;
+					WeaponStatus[DFProp_Blood] = 0;
+				}
+				else
+				{
+					plr.bloodloss += ((WeaponStatus[DFProp_Hunger] - TimeToEat) / 20) * (plr.regenblues > 0 ? 2 : 1);
+				}
 			}
 		}
 	}
