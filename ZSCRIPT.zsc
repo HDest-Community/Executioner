@@ -90,7 +90,7 @@ class HDDefiler : HDWeapon
 		sb.DrawRect(-23, -17, -13, 5);
 		sb.DrawRect(-36, -16, -2, 3);
 		sb.DrawRect(-38, -15, -2, 1);
-		sb.DrawWepNum(hdw.WeaponStatus[DFProp_Blood], MaxCharge);
+		sb.DrawWepNum(hdw.WeaponStatus[DFProp_Blood], MaxCharge, alwaysprecise: true);
 	}
 
 	action bool A_Stab(double dmg)
@@ -164,7 +164,7 @@ class HDDefiler : HDWeapon
 		{
 			bool overfed = invoker.WeaponStatus[DFProp_Hunger] < 0;
 			invoker.WeaponStatus[DFProp_Blood] = int(min(invoker.WeaponStatus[DFProp_Blood] + dmg / (overfed ? 30 : 40), MaxCharge));
-			invoker.WeaponStatus[DFProp_Hunger] = int(max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - dmg * (overfed ? 0.5 : 1.0)));
+			invoker.WeaponStatus[DFProp_Hunger] = int(max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - dmg * (overfed ? 0.25 : 0.6)));
 			invoker.Bloodied = true;
 			A_CheckKnifeFrame();
 		}
@@ -213,7 +213,7 @@ class HDDefiler : HDWeapon
 			pitch = newPitch;
 
 			let plr = HDPlayerPawn(self);
-			plr.bloodloss += 50;
+			plr.bloodloss += plr.regenblues > 30 ? 100 : 50;
 
 			A_StartSound("Defiler/Assassinate", 7);
 			invoker.Assassination = true;
@@ -229,7 +229,7 @@ class HDDefiler : HDWeapon
 
 	private action bool A_IsValidTarget(Actor a)
 	{
-		return a is 'HDHumanoid' && a.Health > 0 && Distance3D(a) < HDCONST_ONEMETRE * 10 && !a.bFRIENDLY;
+		return (a is 'HDHumanoid' || a is 'Serpentipede') && a.Health > 0 && Distance3D(a) < HDCONST_ONEMETRE * 10 && !a.bFRIENDLY;
 	}
 
 	const MaxCharge = 50;
