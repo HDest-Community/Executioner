@@ -200,7 +200,7 @@ class HDDefiler : HDWeapon
 			return;
 		}
 
-		vector3 oldPos = pos;		
+		vector3 oldPos = pos;
 		if (Warp(data.HitActor, -(data.HitActor.radius + radius + 4), 0, 0, 0, WARPF_INTERPOLATE))
 		{
 			double newAngle = angle;
@@ -234,7 +234,7 @@ class HDDefiler : HDWeapon
 
 	private action bool A_IsValidTarget(Actor a)
 	{
-		return (a is 'HDHumanoid' || a is 'Serpentipede') && a.Health > 0 && Distance3D(a) < HDCONST_ONEMETRE * 10 && !a.bFRIENDLY;
+		return (a is 'HDHumanoid' || a is 'Serpentipede') && a.Health > 0 && Distance3D(a) < HDCONST_ONEMETRE * 10 && !a.bFRIENDLY && Warp(a, -(a.radius + radius + 4), 0, 0, 0, WARPF_INTERPOLATE | WARPF_TESTONLY);
 	}
 
 	const MaxCharge = 50;
