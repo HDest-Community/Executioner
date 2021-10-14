@@ -482,6 +482,7 @@ class DefilerHealing : Powerup
 		if (plr && plr.beatcount == 0)
 		{
 			plr.GiveBody(5);
+			plr.stunned = max(0, plr.stunned - 35);
 		}
 	}
 
