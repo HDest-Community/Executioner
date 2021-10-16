@@ -443,12 +443,15 @@ class HDDefiler : HDWeapon
 				plr.A_StartSound("Defiler/Stabbity", CHAN_WEAPON);
 				plr.A_StartSound("Defiler/Stabbity", CHAN_WEAPON, CHANF_OVERLAP);
 				plr.A_StartSound(plr.medsound, CHAN_VOICE);
+
+				double bleedMult = 1.0;
 				if (invoker.WeaponStatus[DFProp_Blood] >= MaxCharge)
 				{
 					plr.A_GiveInventory("DefilerHealing");
 					plr.GiveBody(MaxCharge);
 					plr.aggravateddamage = int(plr.aggravateddamage * 0.75);
-					invoker.WeaponStatus[DFProp_Blood] -= MaxCharge;
+					invoker.WeaponStatus[DFProp_Blood] = 0;
+					bleedMult = 0.5;
 				}
 				else
 				{
@@ -457,7 +460,7 @@ class HDDefiler : HDWeapon
 					plr.bloodloss += toFeed * (plr.regenblues > 30 ? 2 : 1);
 				}
 
-				int toInflict = random(5, random(5, 10 + (!random(0, 2) ? 10 : 0)));
+				int toInflict = int(random(2, random(4, (!random(0, 2) ? 15 : 8))) * bleedMult);
 				if (plr.regenblues > 30)
 				{
 					toInflict *= 4;
