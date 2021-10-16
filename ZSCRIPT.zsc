@@ -243,7 +243,13 @@ class HDDefiler : HDWeapon
 
 	private action bool A_IsValidTarget(Actor a)
 	{
-		return (a is 'HDHumanoid' || a is 'Serpentipede') && !a.InStateSequence(a.CurState, a.FindState('falldown')) && a.Health > 0 && Distance3D(a) < HDCONST_ONEMETRE * 10 && !a.bFRIENDLY && Warp(a, -(a.radius + radius + 4), 0, 0, 0, WARPF_INTERPOLATE | WARPF_TESTONLY);
+		if (!(a is 'HDHumanoid' || a is 'Serpentipede'))
+		{
+			return false;
+		}
+
+		double dist = a.radius + radius + 4;
+		return level.IsPointInLevel(a.Vec3Angle(-dist, 0)) && a.InStateSequence(a.CurState, a.FindState('falldown')) && a.Health > 0 && Distance3D(a) < HDCONST_ONEMETRE * 10 && !a.bFRIENDLY && Warp(a, -dist, 0, 0, 0, WARPF_INTERPOLATE | WARPF_TESTONLY);
 	}
 
 	const MaxCharge = 50;
