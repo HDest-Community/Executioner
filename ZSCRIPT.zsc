@@ -61,7 +61,7 @@ class HDDefiler : HDWeapon
 				}
 				if (WeaponStatus[DFProp_Blood] > 0)
 				{
-					WeaponStatus[DFProp_Hunger] -= DFProp_Blood * 4;
+					WeaponStatus[DFProp_Hunger] -= DFProp_Blood * 6;
 					WeaponStatus[DFProp_Blood] = 0;
 				}
 				else
