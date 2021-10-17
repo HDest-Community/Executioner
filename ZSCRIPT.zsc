@@ -66,7 +66,7 @@ class HDDefiler : HDWeapon
 				}
 				else
 				{
-					plr.bloodloss += ((WeaponStatus[DFProp_Hunger] - TimeToEat) / 20) * (plr.regenblues > 0 ? 2 : 1);
+					plr.bloodloss += int(ceil((WeaponStatus[DFProp_Hunger] - TimeToEat) / 40.0) * (plr.regenblues > 0 ? 3 : 1));
 				}
 			}
 		}
@@ -88,7 +88,7 @@ class HDDefiler : HDWeapon
 	{
 		return WEPHELP_FIRE.."  Stab\n"
 		..WEPHELP_ALTFIRE.."  Assassinate\n"
-		..WEPHELP_ZOOM.."+"..WEPHELP_ALTFIRE.."  Stab yourself";
+		..WEPHELP_ZOOM.."+"..WEPHELP_FIRE.."  Stab yourself (hold to feed)";
 	}
 
 	override void DrawHUDStuff(HDStatusBar sb, HDWeapon hdw, HDPlayerPawn hpl)
@@ -99,6 +99,7 @@ class HDDefiler : HDWeapon
 		sb.DrawRect(-36, -16, -2, 3);
 		sb.DrawRect(-38, -15, -2, 1);
 		sb.DrawWepNum(hdw.WeaponStatus[DFProp_Blood], MaxCharge, alwaysprecise: true);
+		//sb.DrawWepNum(TimeToEat + hdw.WeaponStatus[DFProp_Hunger], TimeToEat, alwaysprecise: true);
 	}
 
 	action bool A_Stab(double dmg)
@@ -460,12 +461,6 @@ class HDDefiler : HDWeapon
 					invoker.WeaponStatus[DFProp_Blood] = 0;
 					bleedMult = 0.5;
 				}
-				else
-				{
-					int toFeed = random(300, 400);
-					invoker.WeaponStatus[DFProp_Hunger] = max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - toFeed);
-					plr.bloodloss += toFeed * (plr.regenblues > 30 ? 2 : 1);
-				}
 
 				int toInflict = int(random(2, random(4, (!random(0, 2) ? 15 : 8))) * bleedMult);
 				if (plr.regenblues > 30)
@@ -474,6 +469,19 @@ class HDDefiler : HDWeapon
 				}
 				plr.woundcount += toInflict;
 			}
+		Schlorp:
+			#### # 20;
+			#### # 0 A_JumpIf(!PressingFire(), 'EndSchlorp');
+			#### # 0
+			{
+				let plr = HDPlayerPawn(self);
+				int toFeed = random(40, 60);
+				invoker.WeaponStatus[DFProp_Hunger] = max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - toFeed);
+				plr.bloodloss += toFeed * (plr.regenblues > 30 ? 2 : 1);
+				plr.A_StartSound("Defiler/Schlorp", CHAN_WEAPON, volume: 0.5, pitch: frandom(0.9, 1.2));
+			}
+			Loop;
+		EndSchlorp:
 			TNT1 A 15;
 			DFLR # 0
 			{

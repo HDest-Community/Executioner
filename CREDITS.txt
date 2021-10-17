@@ -6,3 +6,4 @@ Sprites:
 
 Sounds:
 - Swinging: CoD Black Ops Declassified (https://www.sounds-resource.com/playstation_vita/callofdutyblackopsdeclassified/sound/21685/)
+- Schlorp: Soul Nomad (Nippon Ichi Software)

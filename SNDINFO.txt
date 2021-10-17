@@ -10,3 +10,6 @@ Defiler/Assassinate DFLRASS
 
 Defiler/Unsheathe DFLROUT
 Defiler/Swing DFLRSWNG
+
+// https://i.gifer.com/1fiR.gif
+Defiler/Schlorp DFLRSLRP
