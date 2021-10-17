@@ -462,7 +462,7 @@ class HDDefiler : HDWeapon
 				}
 				else
 				{
-					int toFeed = random(200, 300);
+					int toFeed = random(300, 400);
 					invoker.WeaponStatus[DFProp_Hunger] = max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - toFeed);
 					plr.bloodloss += toFeed * (plr.regenblues > 30 ? 2 : 1);
 				}
