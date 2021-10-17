@@ -478,7 +478,7 @@ class HDDefiler : HDWeapon
 				int toFeed = random(40, 60);
 				invoker.WeaponStatus[DFProp_Hunger] = max(-TimeToEat, invoker.WeaponStatus[DFProp_Hunger] - toFeed);
 				plr.bloodloss += toFeed * (plr.regenblues > 30 ? 2 : 1);
-				plr.A_StartSound("Defiler/Schlorp", CHAN_WEAPON, volume: 0.5, pitch: frandom(0.9, 1.2));
+				plr.A_StartSound("Defiler/Schlorp", CHAN_WEAPON, pitch: frandom(0.9, 1.2));
 			}
 			Loop;
 		EndSchlorp:
