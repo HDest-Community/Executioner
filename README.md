@@ -1,14 +1,11 @@
 ### Notes
 ---
 - Loadout code is `dfl`.
-- The bar on the HUD is the "charge" bar. The blade's hunger is not visibly tracked. The only cues to that are the whispers and sudden flinch when the knife begins to drain your blood. This occurs every two minutes once the process begins.
-- Hunger and siphoned blood are tracked separately. How much blood is siphoned per attack depends on the damage. Same with hunger - the more damage you inflict, the more hunger you satiate.
-- You can overfeed the blade. If overfed, more blood goes towards the siphoning.
-- You can "dry" stab yourself even if the knife isn't charged to feed it as a last resort if there are no humanoid enemies around. It gives it much more blood, but doesn't charge it, and the penalties are greater if you have blues.
+- The bar on the HUD is the hunger. If you hear whispers and notice sudden flinch, congratulations, you've become food for the knife. This notification occurs every two minutes once the process begins.
+- Hunger can be satiated in two ways: stabbing yourself and holding the knife inside or stabbing enemies. The more damage you inflict, the more hunger you satiate.
+- There are penalties for stabbing yourself while having blues in your system.
 - Equipping the knife while you have zerk makes spikes come out of the handle and impale your hand, locking it in place. For the duration of the zerk, you cannot toss the weapon, but you can switch to something else.
-
-### How it works
----
-- Stabbing humanoids charges the blade and feeds it, reducing its overall hunger.
-- Once the bar is full, you can stab yourself to activate the knife's powers. You will bleed, but also gain rapid health regeneration for 30 seconds.
-- The hungrier it gets, the faster you will lose blood. You cannot drop it once it starts feeding on you.
+- You can stab yourself to activate the knife's powers. You will bleed, but also gain rapid health regeneration for 30 seconds.
+- The hungrier the knife gets, the faster you will lose blood. You cannot drop it once it starts feeding on you.
+- If within 10m of a certain enemies, an indicator will appear above them if they are being aimed at, indicating that you can assassinate them using altfire. The cost for this action will be deducted from the blood siphoned by the knife. If you don't have enough, it will be taken from you directly.
+- The knife doesn't want to let go. It cannot be disarmed.
