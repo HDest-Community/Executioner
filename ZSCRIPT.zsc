@@ -55,7 +55,7 @@ class HDDefiler : HDWeapon
 					plr.A_SetBlend("7a 3a 18", 0.2, 4);
 					plr.A_MuzzleClimb((0, frandom(1.0, 1.5)), (0, 0), (0, 0), (0, 0));
 					plr.A_StartSound(plr.medsound, CHAN_VOICE);
-					plr.A_StartSound("Defiler/Chant", 20, CHANF_LOCAL, 0.5, pitch: frandom(1.0, 1.15));
+					plr.A_StartSound("Defiler/Chant", 20, CHANF_LOCAL, 0.6, pitch: frandom(1.0, 1.15));
 					ChantTicker = 120;
 				}
 				else
@@ -181,7 +181,7 @@ class HDDefiler : HDWeapon
 	private action void A_HighlightTarget()
 	{
 		FLineTraceData data;
-		LineTrace(angle, HDCONST_ONEMETRE * 15, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
+		LineTrace(angle, HDCONST_ONEMETRE * 100, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
 		if (A_IsValidTarget(data.HitActor))
 		{
 			for (int i = 0; i < 2; ++i)
@@ -194,7 +194,7 @@ class HDDefiler : HDWeapon
 	private action void A_Assassinate()
 	{
 		FLineTraceData data;
-		LineTrace(angle, HDCONST_ONEMETRE * 15, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
+		LineTrace(angle, HDCONST_ONEMETRE * 100, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
 		if (!A_IsValidTarget(data.HitActor))
 		{
 			return;
@@ -248,7 +248,7 @@ class HDDefiler : HDWeapon
 		}
 
 		double dist = a.radius + radius + 4;
-		return level.IsPointInLevel(a.Vec3Angle(-dist, 0)) && !a.InStateSequence(a.CurState, a.FindState('falldown')) && a.Health > 0 && Distance3D(a) < HDCONST_ONEMETRE * 10 && !a.bFRIENDLY && Warp(a, -dist, 0, 0, 0, WARPF_INTERPOLATE | WARPF_TESTONLY);
+		return level.IsPointInLevel(a.Vec3Angle(-dist, 0)) && !a.InStateSequence(a.CurState, a.FindState('falldown')) && a.Health > 0 && Distance3D(a) < HDCONST_ONEMETRE * (a is 'ShellShade' ? 100 : 10) && !a.bFRIENDLY && Warp(a, -dist, 0, 0, 0, WARPF_INTERPOLATE | WARPF_TESTONLY);
 	}
 
 	const MaxBlood = 900;
