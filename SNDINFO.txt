@@ -5,16 +5,12 @@ Defiler/Stabbity DFLRFLSH
 Defiler/Chant1 DFLRCNT1
 Defiler/Chant2 DFLRCNT2
 Defiler/Chant3 DFLRCNT3
-Defiler/Chant4 DFLRCNT4
-Defiler/Chant5 DFLRCNT5
 
 $random Defiler/Chant
 {
 	Defiler/Chant1
 	Defiler/Chant2
 	Defiler/Chant3
-	Defiler/Chant4
-	Defiler/Chant5
 }
 
 $random Defiler/WallImpact { Defiler/WallImpact1 Defiler/WallImpact2 }

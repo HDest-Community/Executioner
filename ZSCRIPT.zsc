@@ -26,7 +26,8 @@ class HDDefiler : HDWeapon
 	enum DefilerProperties
 	{
 		DFProp_Flags, 
-		DFProp_Blood
+		DFProp_Blood,
+		DFProp_Level
 	}
 
 	override void Tick()
@@ -55,15 +56,37 @@ class HDDefiler : HDWeapon
 					plr.A_SetBlend("7a 3a 18", 0.2, 4);
 					plr.A_MuzzleClimb((0, frandom(1.0, 1.5)), (0, 0), (0, 0), (0, 0));
 					plr.A_StartSound(plr.medsound, CHAN_VOICE);
-					plr.A_StartSound("Defiler/Chant", 20, CHANF_LOCAL, 0.6, pitch: frandom(1.0, 1.15));
+					plr.A_StartSound("Defiler/Chant", 20, CHANF_LOCAL, 0.7, pitch: frandom(1.0, 1.05));
 					ChantTicker = 120;
 				}
 				else
 				{
-					plr.bloodloss += int(ceil(abs(WeaponStatus[DFProp_Blood]) / 40.0) * (plr.regenblues > 0 ? 3 : 1));
+					plr.bloodloss += int(ceil(abs(WeaponStatus[DFProp_Blood]) / 40.0) * (plr.CountInv('HDBlues') > 0 ? 3 : 1));
 				}
 			}
 		}
+	}
+
+	override void ActualPickup(Actor other, bool silent)
+	{
+		let knife = HDDefiler(other.FindInventory('HDDefiler'));
+		if (knife)
+		{
+			static const string str[] =
+			{
+				"Your blood is all mine.",
+				"I am not sharing you.",
+				"I've grown more powerful.",
+				"My power has increased.",
+				"There can be only one.",
+				"Competition is not healthy."
+			};
+			other.A_Log(str[random[defrand](0, str.Size() - 1)], true);
+			knife.WeaponStatus[DFProp_Level] += WeaponStatus[DFProp_Level] + 1;
+			Destroy();
+			return;
+		}
+		Super.ActualPickup(other, silent);
 	}
 
 	override void DetachFromOwner()
@@ -84,7 +107,6 @@ class HDDefiler : HDWeapon
 		..WEPHELP_ALTFIRE.."  Assassinate\n"
 		..WEPHELP_ZOOM.."+"..WEPHELP_FIRE.."  Stab yourself (hold to feed)";
 	}
-
 	override void DrawHUDStuff(HDStatusBar sb, HDWeapon hdw, HDPlayerPawn hpl)
 	{
 		sb.DrawRect(-16, -16, -6, 3);
@@ -153,10 +175,11 @@ class HDDefiler : HDWeapon
 			dmg *= frandom(1.75, 2.0);
 		}
 
-		if (hd_debug)
+		if (invoker.Assassination)
 		{
-			A_Log(string.format("Stabbed %s for %i damage!", pActor.GetClassName(), dmg));
+			dmg = pActor.Health;
 		}
+
 		if (dmg * 2 > pActor.Health)
 		{
 			pActor.A_StartSound("Defiler/Stabbity", CHAN_AUTO);
@@ -164,17 +187,20 @@ class HDDefiler : HDWeapon
 
 		if (pActor is 'HDHumanoid' && pActor.Health > 0)
 		{
-			invoker.WeaponStatus[DFProp_Blood] = int(min(MaxBlood, invoker.WeaponStatus[DFProp_Blood] + dmg * 0.85));
+			if (!invoker.Assassination)
+			{
+				invoker.WeaponStatus[DFProp_Blood] = int(min(MaxBlood, invoker.WeaponStatus[DFProp_Blood] + dmg * 2));
+			}
 			invoker.Bloodied = true;
 			A_CheckKnifeFrame();
 		}
 
-		if (invoker.Assassination)
+		if (hd_debug)
 		{
-			dmg *= 4;
+			A_Log(string.format("Stabbed %s for %i damage!", pActor.GetClassName(), dmg));
 		}
 
-		pActor.DamageMobj(invoker, self, int(dmg), 'Melee');
+		pActor.DamageMobj(invoker, self, int(dmg), 'Melee', DMG_FORCED);
 		return true;
 	}
 
@@ -186,7 +212,7 @@ class HDDefiler : HDWeapon
 		{
 			for (int i = 0; i < 2; ++i)
 			{
-				data.HitActor.A_SpawnParticle("DarkRed", SPF_RELATIVE | SPF_FULLBRIGHT, random(20, 35), random(4, 12), random(0, 360), random(-16, 16), 0, height + 5 + random(8, -8), 0, 0, frandom(-1.0, -3.0), 0, 0, -0.3);
+				data.HitActor.A_SpawnParticle("DarkRed", SPF_RELATIVE | SPF_FULLBRIGHT, random(20, 35), random(4, 12), random(0, 360), frandom(0, data.HitActor.radius), 0, data.HitActor.height + 5 + random(8, -8), 0, 0, frandom(-1.0, -3.0), 0, 0, -0.3);
 			}
 		}
 	}
@@ -203,8 +229,6 @@ class HDDefiler : HDWeapon
 		vector3 oldPos = pos;
 		if (Warp(data.HitActor, -(data.HitActor.radius + radius + 4), 0, 0, 0, WARPF_INTERPOLATE))
 		{
-			double newAngle = angle;
-			double newPitch = pitch;
 			vector3 newPos = pos;
 
 			SetXYZ(oldPos);
@@ -214,17 +238,20 @@ class HDDefiler : HDWeapon
 			A_RailAttack(0, 0, 0, "", "", RGF_SILENT | RGF_NOPIERCING | RGF_CENTERZ, 1.0, null, spawnclass: 'DefilerTrailParticleSpawner');
 
 			SetXYZ(newPos);
-			angle = newAngle;
-			pitch = newPitch;
+			A_Face(data.HitActor, 0, 0);
 
 			let plr = HDPlayerPawn(self);
-			if (invoker.WeaponStatus[DFProp_Blood] >= 50)
+
+			int cost = data.HitActor.Health;
+			if (data.HitActor is 'Necromancer')
 			{
-				invoker.WeaponStatus[DFProp_Blood] -= 50;
+				cost /= 4;
 			}
-			else
+			invoker.WeaponStatus[DFProp_Blood] -= cost;
+			if (invoker.WeaponStatus[DFProp_Blood] < 0)
 			{
-				plr.bloodloss += plr.regenblues > 30 ? 100 : 50;
+				plr.bloodloss += abs(invoker.WeaponStatus[DFProp_Blood]) * (plr.CountInv('HDBlues') > 30 ? 2 : 1);
+				invoker.WeaponStatus[DFProp_Blood] = 0;
 			}
 
 			A_StartSound("Defiler/Assassinate", 7);
@@ -242,16 +269,27 @@ class HDDefiler : HDWeapon
 
 	private action bool A_IsValidTarget(Actor a)
 	{
-		if (!(a is 'HDHumanoid' || a is 'Serpentipede'))
+		if (!a || !a.bISMONSTER || a.bBOSS || !a.bSHOOTABLE || a.bINVULNERABLE || a.bFRIENDLY || a.Health <= 0 || a.bCORPSE)
 		{
 			return false;
 		}
 
-		double dist = a.radius + radius + 4;
-		return level.IsPointInLevel(a.Vec3Angle(-dist, 0)) && !a.InStateSequence(a.CurState, a.FindState('falldown')) && a.Health > 0 && Distance3D(a) < HDCONST_ONEMETRE * (a is 'ShellShade' ? 100 : 10) && !a.bFRIENDLY && Warp(a, -dist, 0, 0, 0, WARPF_INTERPOLATE | WARPF_TESTONLY);
+		double warpDist = a.radius + radius + 4;
+		double useDist = HDCONST_ONEMETRE * (10 + 2 * invoker.WeaponStatus[DFProp_Level]) * (a is 'ShellShade' ? 10 : 1);
+		return level.IsPointInLevel(a.Vec3Angle(-warpDist, 0)) && !a.InStateSequence(a.CurState, a.FindState('falldown')) && Distance3D(a) <= useDist && Warp(a, -warpDist, 0, 0, 0, WARPF_INTERPOLATE | WARPF_TESTONLY);
 	}
 
-	const MaxBlood = 900;
+	private action void A_RotateToNormal()
+	{
+		let psp = player.GetPSprite(PSP_WEAPON);
+		if (psp.rotation < 15 * 2)
+		{
+			A_OverlayPivotAlign(PSP_WEAPON, PSPA_CENTER, PSPA_CENTER);
+			A_OverlayRotate(PSP_WEAPON, 15, WOF_ADD);
+		}
+	}
+
+	const MaxBlood = 1800;
 	private bool HasAttacked;
 	private bool Bloodied;
 	private int ChantTicker;
@@ -290,6 +328,8 @@ class HDDefiler : HDWeapon
 		Ready:
 			DFLR A 1
 			{
+				invoker.TotalSchlorped = 0;
+
 				A_CheckKnifeFrame();
 				if (!PressingFire() && !PressingAltfire())
 				{
@@ -306,22 +346,19 @@ class HDDefiler : HDWeapon
 				A_HighlightTarget();
 
 				let psp = player.GetPSprite(PSP_WEAPON);
-				if (psp.rotation < 15 * 2)
-				{
-					A_OverlayPivotAlign(PSP_WEAPON, PSPA_CENTER, PSPA_CENTER);
-					A_OverlayRotate(PSP_WEAPON, 15, WOF_ADD);
-				}
+				A_RotateToNormal();
 
-				if (plr.zerk > 0 && !invoker.bUNTOSSABLE)
+				int zerk = CountInv('HDZerk');
+				if (zerk > 0 && !invoker.bUNTOSSABLE)
 				{
 					invoker.bUNTOSSABLE = true;
-					plr.A_StartSound("misc/bulletflesh", CHAN_AUTO);
+					A_StartSound("misc/bulletflesh", CHAN_AUTO);
 					A_MuzzleClimb(frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(0.0, 1.0));
 				}
-				else if (plr.zerk <= 0 && invoker.bUNTOSSABLE)
+				else if (zerk <= 0 && invoker.bUNTOSSABLE)
 				{
 					invoker.bUNTOSSABLE = false;
-					plr.A_StartSound("misc/bulletflesh", CHAN_AUTO);
+					A_StartSound("misc/bulletflesh", CHAN_AUTO);
 					A_MuzzleClimb(frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(0.0, 1.0));
 					plr.woundcount += 3;
 				}
@@ -331,7 +368,8 @@ class HDDefiler : HDWeapon
 			DFLR A 0
 			{
 				A_CheckKnifeFrame();
-				A_GiveInventory('DefilerPassiveSpeed');
+				let speed = DefilerPassiveSpeed(GiveInventoryType('DefilerPassiveSpeed'));
+				speed.Level = invoker.WeaponStatus[DFProp_Level];
 				A_GiveInventory('DefilerPassiveInvisibility');
 				A_StartSound("Defiler/Unsheathe", CHAN_WEAPON);
 			}
@@ -451,7 +489,7 @@ class HDDefiler : HDWeapon
 				A_StartSound(plr.medsound, CHAN_VOICE);
 
 				int toInflict = int(random(2, random(4, (!random(0, 2) ? 15 : 8))));
-				if (plr.regenblues > 30)
+				if (plr.CountInv('HDBlues') > 30)
 				{
 					toInflict *= 4;
 				}
@@ -459,20 +497,33 @@ class HDDefiler : HDWeapon
 			}
 		Schlorp:
 			#### # 20;
-			#### # 0 A_JumpIf(!PressingFire() || invoker.WeaponStatus[DFProp_Blood] > MaxBlood - 10, 'EndSchlorp');
+			#### # 0
+			{
+				bool fullyFed = invoker.WeaponStatus[DFProp_Blood] > MaxBlood - 30;
+				if (fullyFed && !random(0, 2) && invoker.TotalSchlorped > 500)
+				{
+					A_StartSound("Defiler/Chant", 20, CHANF_LOCAL, 0.7, pitch: frandom(1.0, 1.05));
+					invoker.ChantTicker = 0;
+				}
+				if (!PressingFire() || fullyFed)
+				{
+					SetWeaponState('EndSchlorp');
+				}
+			}
 			#### # 0
 			{
 				let plr = HDPlayerPawn(self);
-				int toFeed = random(40, 60);
-				invoker.WeaponStatus[DFProp_Blood] = min(MaxBlood, invoker.WeaponStatus[DFProp_Blood] + toFeed);
+				int toFeed = random(80, 120);
+				invoker.WeaponStatus[DFProp_Blood] = min(MaxBlood, invoker.WeaponStatus[DFProp_Blood] + toFeed * 2);
 				invoker.TotalSchlorped += toFeed;
 				if (invoker.TotalSchlorped > 150)
 				{
 					A_GiveInventory("DefilerHealing");
-					GiveBody(15);
-					invoker.TotalSchlorped = 0;
+					let healing = DefilerHealing(FindInventory('DefilerHealing'));
+					healing.Level = invoker.WeaponStatus[DFProp_Level];
 				}
-				plr.bloodloss += toFeed * (plr.regenblues > 30 ? 2 : 1);
+				plr.bloodloss += toFeed * (plr.CountInv('HDBlues') > 30 ? 2 : 1);
+				plr.stunned = max(105, plr.stunned);
 				A_StartSound("Defiler/Schlorp", CHAN_WEAPON, pitch: frandom(0.9, 1.2));
 			}
 			Loop;
@@ -487,7 +538,11 @@ class HDDefiler : HDWeapon
 			{
 				A_WeaponOffset(0, -20, WOF_ADD);
 			}
-			#### # 0 A_WeaponBusy(false);
+			#### ## 1
+			{
+				A_WeaponBusy(false);
+				A_RotateToNormal();
+			}
 			Goto Nope;
 	}
 }
@@ -497,6 +552,7 @@ class DefilerHealing : Powerup
 	override void DoEffect()
 	{
 		Super.DoEffect();
+		EffectTics = min(EffectTics, 35 * 30 + 35 * 10 * Level);
 		let plr = HDPlayerPawn(owner);
 		if (!plr)
 		{
@@ -507,23 +563,33 @@ class DefilerHealing : Powerup
 		plr.bloodpressure = max(plr.bloodpressure, 50);
 		if (plr && plr.beatcount == 0)
 		{
-			plr.GiveBody(5);
-			plr.stunned = max(0, plr.stunned - 35);
+			plr.GiveBody(5 + 5 * Level);
+			plr.stunned = max(0, plr.stunned - (35 + 20 * Level));
 		}
 	}
+
+	int Level;
 
 	Default
 	{
 		+INVENTORY.ALWAYSPICKUP
-		Powerup.Duration -30;
+		Powerup.Duration 0xFFFF;
 	}
 }
 
 class DefilerPassiveSpeed : PowerSpeed
 {
+	override void DoEffect()
+	{
+		Speed = default.Speed + 0.25 * Level;
+		Super.DoEffect();
+	}
+
+	int Level;
+
 	Default
 	{
-		Speed 1.33;
+		Speed 1.25;
 		Powerup.Duration 0xFFFFFF;
 	}
 }
@@ -580,7 +646,7 @@ class DefilerTrailParticleSpawner : Actor
 		Spawn:
 			TNT1 A 1 NoDelay
 			{
-				A_SpawnParticle(0xFF0000, SPF_RELATIVE | SPF_FULLBRIGHT, random(35, 60), frandom(2.0, 5.0), 0, 0, random(-10, 10), random(-20, 20), frandom(-0.1, 0.1), frandom(-0.5, 0.5), frandom(-0.5, 0.5), 0, frandom(-0.01, 0.01), frandom(-0.01, 0.01));
+				A_SpawnParticle(0xFF0000, SPF_RELATIVE | SPF_FULLBRIGHT, random(40, 105), frandom(2.0, 5.0), 0, 0, random(-10, 10), random(-20, 20), frandom(-0.1, 0.1), frandom(-0.5, 0.5), frandom(-0.5, 0.5), 0, frandom(-0.01, 0.01), frandom(-0.01, 0.01));
 			}
 			Stop;
 	}
