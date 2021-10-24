@@ -533,7 +533,7 @@ class HDDefiler : HDWeapon
 				invoker.TotalSchlorped += toFeed;
 				if (invoker.TotalSchlorped > 150)
 				{
-					A_GiveInventory("DefilerHealing", 20);
+					A_GiveInventory("DefilerHealing", 80);
 					let healing = DefilerHealing(FindInventory('DefilerHealing'));
 					healing.Level = invoker.WeaponStatus[DFProp_Level];
 				}
