@@ -243,7 +243,7 @@ class HDDefiler : HDWeapon
 			let plr = HDPlayerPawn(self);
 
 			int cost = data.HitActor.Health;
-			if (data.HitActor is 'Necromancer' || CountInv('HDZerk') > HDZerk.HDZERK_DURATION)
+			if (data.HitActor is 'Necromancer' || CountInv('HDZerk') > HDZerk.HDZERK_COOLOFF)
 			{
 				cost /= 4;
 			}
@@ -348,7 +348,7 @@ class HDDefiler : HDWeapon
 				let psp = player.GetPSprite(PSP_WEAPON);
 				A_RotateToNormal();
 
-				int zerk = CountInv('HDZerk');
+				int zerk = CountInv('HDZerk') > HDZerk.HDZERK_COOLOFF;
 				if (zerk > 0 && !invoker.bUNTOSSABLE)
 				{
 					invoker.bUNTOSSABLE = true;
