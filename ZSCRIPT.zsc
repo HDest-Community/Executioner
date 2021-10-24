@@ -396,7 +396,12 @@ class HDDefiler : HDWeapon
 				invoker.HasAttacked = true;
 				A_OverlayRotate(PSP_WEAPON, 0);
 				A_WeaponOffset(60, 0, WOF_KEEPY);
-				bool success = A_Stab((CheckInventory('PowerStrength', 1) ? 150 : 60));
+
+				bool hasZerk = CountInv('HDZerk') > 0;
+				int dmg = hasZerk ? 200 : 60;
+				dmg += (hasZerk ? 40 : 20) * invoker.WeaponStatus[DFProp_Level];
+
+				bool success = A_Stab(dmg);
 				if (success)
 				{
 					SetWeaponState('Stab');
