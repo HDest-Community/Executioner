@@ -126,7 +126,7 @@ class HDDefiler : HDWeapon
 			return false;
 		}
 
-		LineAttack(angle, 56, pitch, data.HitLine ? (CheckInventory('PowerStrength', 1) ? random(50, 120) : random(5, 15)) : 0, "None", CheckInventory('PowerStrength', 1) ? 'DefilerPuffBig' : 'DefilerPuffSmall', flags: LAF_NORANDOMPUFFZ | LAF_OVERRIDEZ, offsetz: height - 12);
+		LineAttack(angle, 56, pitch, 0, "None", CheckInventory('PowerStrength', 1) ? 'DefilerPuffBig' : 'DefilerPuffSmall', flags: LAF_NORANDOMPUFFZ | LAF_OVERRIDEZ, offsetz: height - 12);
 
 		if (!data.HitActor)
 		{
