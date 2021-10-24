@@ -56,7 +56,7 @@ class HDDefiler : HDWeapon
 					plr.A_SetBlend("7a 3a 18", 0.2, 4);
 					plr.A_MuzzleClimb((0, frandom(1.0, 1.5)), (0, 0), (0, 0), (0, 0));
 					plr.A_StartSound(plr.medsound, CHAN_VOICE);
-					plr.A_StartSound("Defiler/Chant", 20, CHANF_LOCAL, 0.7, pitch: frandom(1.0, 1.05));
+					plr.A_StartSound("Defiler/Chant", 20, CHANF_LOCAL, 0.85, pitch: frandom(1.0, 1.05));
 					ChantTicker = 120;
 				}
 				else
@@ -517,7 +517,7 @@ class HDDefiler : HDWeapon
 				bool fullyFed = invoker.WeaponStatus[DFProp_Blood] > MaxBlood - 30;
 				if (fullyFed && !random(0, 2) && invoker.TotalSchlorped > 500)
 				{
-					A_StartSound("Defiler/Chant", 20, CHANF_LOCAL, 0.7, pitch: frandom(1.0, 1.05));
+					A_StartSound("Defiler/Chant", 20, CHANF_LOCAL, 0.85, pitch: frandom(1.0, 1.05));
 					invoker.ChantTicker = 0;
 				}
 				if (!PressingFire() || fullyFed)
