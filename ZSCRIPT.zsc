@@ -400,7 +400,7 @@ class HDDefiler : HDWeapon
 				int dmg = 60 + 20 * invoker.WeaponStatus[DFProp_Level];
 				if (HDPlayerPawn(self).strength > 1.0)
 				{
-					dmg = dmg * (1.2 ** (HDPlayerPawn(self).strength * 3));
+					dmg = int(dmg * (1.2 ** (HDPlayerPawn(self).strength * 3)));
 				}
 
 				bool success = A_Stab(dmg);
@@ -533,7 +533,7 @@ class HDDefiler : HDWeapon
 				invoker.TotalSchlorped += toFeed;
 				if (invoker.TotalSchlorped > 150)
 				{
-					A_GiveInventory("DefilerHealing");
+					A_GiveInventory("DefilerHealing", 20);
 					let healing = DefilerHealing(FindInventory('DefilerHealing'));
 					healing.Level = invoker.WeaponStatus[DFProp_Level];
 				}
@@ -562,34 +562,24 @@ class HDDefiler : HDWeapon
 	}
 }
 
-class DefilerHealing : Powerup
+class DefilerHealing : HDDrug
 {
 	override void DoEffect()
 	{
 		Super.DoEffect();
-		EffectTics = min(EffectTics, 35 * 30 + 35 * 10 * Level);
 		let plr = HDPlayerPawn(owner);
-		if (!plr)
-		{
-			return;
-		}
-
 		plr.beatmax = min(plr.beatmax, 10);
 		plr.bloodpressure = max(plr.bloodpressure, 50);
-		if (plr && plr.beatcount == 0)
-		{
-			plr.GiveBody(5 + 5 * Level);
-			plr.stunned = max(0, plr.stunned - (35 + 20 * Level));
-		}
+	}
+
+	override void OnHeartbeat(HDPlayerPawn hdp)
+	{
+		hdp.GiveBody(3 + 2 * Level);
+		hdp.stunned = max(0, hdp.stunned - (20 + 10 * Level));
+		Amount--;
 	}
 
 	int Level;
-
-	Default
-	{
-		+INVENTORY.ALWAYSPICKUP
-		Powerup.Duration 0xFFFF;
-	}
 }
 
 class DefilerPassiveSpeed : PowerSpeed
