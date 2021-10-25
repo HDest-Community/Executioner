@@ -1,4 +1,4 @@
-decal DefilerSlashSmallBlack
+decal ExecutionerSlashSmallBlack
 {
 	pic SSLASH1
 	shade "00 00 00"
@@ -6,7 +6,7 @@ decal DefilerSlashSmallBlack
 	y-scale 0.04
 }
 
-decal DefilerSlashSmall
+decal ExecutionerSlashSmall
 {
 	pic SSLASH1
 	shade "FF 11 11"
@@ -14,10 +14,10 @@ decal DefilerSlashSmall
 	y-scale 0.03
 	Fullbright
 	animator GoAway
-	LowerDecal "DefilerSlashSmallBlack"
+	LowerDecal "ExecutionerSlashSmallBlack"
 }
 
-decal DefilerSlashBigBlack
+decal ExecutionerSlashBigBlack
 {
 	pic SSLASH1
 	shade "00 00 00"
@@ -25,7 +25,7 @@ decal DefilerSlashBigBlack
 	y-scale 0.06
 }
 
-decal DefilerSlashBig
+decal ExecutionerSlashBig
 {
 	pic SSLASH1
 	shade "FF 11 11"
@@ -33,5 +33,5 @@ decal DefilerSlashBig
 	y-scale 0.05
 	Fullbright
 	animator GoAway
-	LowerDecal "DefilerSlashBigBlack"
+	LowerDecal "ExecutionerSlashBigBlack"
 }

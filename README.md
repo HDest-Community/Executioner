@@ -1,6 +1,6 @@
 ### Notes
 ---
-- Loadout code is `dfl`.
+- Loadout code is `exe`.
 - The bar on the HUD is the hunger. If you hear a lewd sound and notice a sudden flinch, congratulations, you've become food for the knife. This notification occurs every two minutes once the process begins. It also plays sometimes when you've fully fed the knife. [maniacal stabbing]
 - Hunger can be satiated in two ways: stabbing yourself and holding the knife inside or stabbing humanoid enemies. The more damage you inflict, the more hunger you satiate.
 - There are penalties for stabbing yourself while having blues in your system.

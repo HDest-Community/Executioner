@@ -1,26 +1,26 @@
-Defiler/WallImpact1 DFLRHIT1
-Defiler/WallImpact2 DFLRHIT1
-Defiler/Stabbity DFLRFLSH
+Executioner/WallImpact1 DFLRHIT1
+Executioner/WallImpact2 DFLRHIT1
+Executioner/Stabbity DFLRFLSH
 
-Defiler/Chant1 DFLRCNT1
-Defiler/Chant2 DFLRCNT2
-Defiler/Chant3 DFLRCNT3
+Executioner/Chant1 DFLRCNT1
+Executioner/Chant2 DFLRCNT2
+Executioner/Chant3 DFLRCNT3
 
-$random Defiler/Chant
+$random Executioner/Chant
 {
-	Defiler/Chant1
-	Defiler/Chant2
-	Defiler/Chant3
+	Executioner/Chant1
+	Executioner/Chant2
+	Executioner/Chant3
 }
 
-$random Defiler/WallImpact { Defiler/WallImpact1 Defiler/WallImpact2 }
-$limit Defiler/WallImpact 0
+$random Executioner/WallImpact { Executioner/WallImpact1 Executioner/WallImpact2 }
+$limit Executioner/WallImpact 0
 
 // [Ace] Lord knows I'd defile *that* ass.
-Defiler/Assassinate DFLRASS
+Executioner/Assassinate DFLRASS
 
-Defiler/Unsheathe DFLROUT
-Defiler/Swing DFLRSWNG
+Executioner/Unsheathe DFLROUT
+Executioner/Swing DFLRSWNG
 
 // https://i.gifer.com/1fiR.gif
-Defiler/Schlorp DFLRSLRP
+Executioner/Schlorp DFLRSLRP
