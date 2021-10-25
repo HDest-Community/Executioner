@@ -1,10 +1,10 @@
-Executioner/WallImpact1 DFLRHIT1
-Executioner/WallImpact2 DFLRHIT1
-Executioner/Stabbity DFLRFLSH
+Executioner/WallImpact1 EXECHIT1
+Executioner/WallImpact2 EXECHIT1
+Executioner/Stabbity EXECFLSH
 
-Executioner/Chant1 DFLRCNT1
-Executioner/Chant2 DFLRCNT2
-Executioner/Chant3 DFLRCNT3
+Executioner/Chant1 EXECCNT1
+Executioner/Chant2 EXECCNT2
+Executioner/Chant3 EXECCNT3
 
 $random Executioner/Chant
 {
@@ -17,10 +17,10 @@ $random Executioner/WallImpact { Executioner/WallImpact1 Executioner/WallImpact2
 $limit Executioner/WallImpact 0
 
 // [Ace] Lord knows I'd defile *that* ass.
-Executioner/Assassinate DFLRASS
+Executioner/Assassinate EXECASS
 
-Executioner/Unsheathe DFLROUT
-Executioner/Swing DFLRSWNG
+Executioner/Unsheathe EXECOUT
+Executioner/Swing EXECSWNG
 
 // https://i.gifer.com/1fiR.gif
-Executioner/Schlorp DFLRSLRP
+Executioner/Schlorp EXECSLRP
