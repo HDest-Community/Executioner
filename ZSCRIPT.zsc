@@ -317,7 +317,7 @@ class HDExecutioner : HDWeapon
 		Weapon.SlotPriority 2;
 		Scale 0.3;
 		Tag "Executioner";
-		HDWeapon.Refid "dfl";
+		HDWeapon.Refid "exe";
 	}
 
 	States
