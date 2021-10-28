@@ -232,13 +232,13 @@ class HDExecutioner : HDWeapon
 			vector3 newPos = pos;
 
 			SetXYZ(oldPos);
-			A_Face(data.HitActor, 0, 0);
+			A_Face(data.HitActor, 0, 0, flags: FAF_MIDDLE);
 
 			// [Ace] And now we do a little hacking. I can't into vector math.
 			A_RailAttack(0, 0, 0, "", "", RGF_SILENT | RGF_NOPIERCING | RGF_CENTERZ, 1.0, null, spawnclass: 'ExecutionerTrailParticleSpawner');
 
 			SetXYZ(newPos);
-			A_Face(data.HitActor, 0, 0);
+			A_Face(data.HitActor, 0, 0, flags: FAF_MIDDLE);
 
 			let plr = HDPlayerPawn(self);
 
