@@ -368,7 +368,8 @@ class HDExecutioner : HDWeapon
 			EXEC A 0
 			{
 				A_CheckKnifeFrame();
-				let speed = ExecutionerPassiveSpeed(GiveInventoryType('ExecutionerPassiveSpeed'));
+				A_GiveInventory('ExecutionerPassiveSpeed');
+				let speed = ExecutionerPassiveSpeed(FindInventory('ExecutionerPassiveSpeed'));
 				speed.Level = invoker.WeaponStatus[DFProp_Level];
 				A_GiveInventory('ExecutionerPassiveInvisibility');
 				A_StartSound("Executioner/Unsheathe", CHAN_WEAPON);
