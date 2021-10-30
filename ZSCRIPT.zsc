@@ -189,7 +189,7 @@ class HDExecutioner : HDWeapon
 		{
 			if (!invoker.Assassination)
 			{
-				invoker.WeaponStatus[DFProp_Blood] = int(min(MaxBlood, invoker.WeaponStatus[DFProp_Blood] + dmg * 2));
+				invoker.WeaponStatus[DFProp_Blood] = int(min(MaxBlood, invoker.WeaponStatus[DFProp_Blood] + dmg * 3));
 			}
 			invoker.Bloodied = true;
 			A_CheckKnifeFrame();
@@ -269,7 +269,8 @@ class HDExecutioner : HDWeapon
 
 	private action bool A_IsValidTarget(Actor a)
 	{
-		if (!a || !a.bISMONSTER || a.bBOSS || !a.bSHOOTABLE || a.bINVULNERABLE || a.bFRIENDLY || a.Health <= 0 || a.bCORPSE)
+		let plr = HDPlayerPawn(invoker.owner);
+		if (!plr || plr.bloodloss > 2000 || !a || !a.bISMONSTER || a.bBOSS || !a.bSHOOTABLE || a.bINVULNERABLE || a.bFRIENDLY || a.Health <= 0 || a.bCORPSE)
 		{
 			return false;
 		}
@@ -289,7 +290,7 @@ class HDExecutioner : HDWeapon
 		}
 	}
 
-	const MaxBlood = 1800;
+	const MaxBlood = 3000;
 	private bool HasAttacked;
 	private bool Bloodied;
 	private int ChantTicker;
@@ -515,13 +516,13 @@ class HDExecutioner : HDWeapon
 			#### # 20;
 			#### # 0
 			{
-				bool fullyFed = invoker.WeaponStatus[DFProp_Blood] > MaxBlood - 30;
+				bool fullyFed = invoker.WeaponStatus[DFProp_Blood] > MaxBlood - 100;
 				if (fullyFed && !random(0, 2) && invoker.TotalSchlorped > 500)
 				{
 					A_StartSound("Executioner/Chant", 20, CHANF_LOCAL, 0.85, pitch: frandom(1.0, 1.05));
 					invoker.ChantTicker = 0;
 				}
-				if (!PressingFire() || fullyFed)
+				if (!PressingFire() || fullyFed || HDPlayerPawn(self).bloodloss > 2000)
 				{
 					SetWeaponState('EndSchlorp');
 				}
@@ -530,7 +531,7 @@ class HDExecutioner : HDWeapon
 			{
 				let plr = HDPlayerPawn(self);
 				int toFeed = random(80, 120);
-				invoker.WeaponStatus[DFProp_Blood] = min(MaxBlood, invoker.WeaponStatus[DFProp_Blood] + toFeed * 2);
+				invoker.WeaponStatus[DFProp_Blood] = min(MaxBlood, invoker.WeaponStatus[DFProp_Blood] + toFeed * 3);
 				invoker.TotalSchlorped += toFeed;
 				if (invoker.TotalSchlorped > 150)
 				{
