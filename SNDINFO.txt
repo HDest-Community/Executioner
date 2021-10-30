@@ -16,7 +16,6 @@ $random Executioner/Chant
 $random Executioner/WallImpact { Executioner/WallImpact1 Executioner/WallImpact2 }
 $limit Executioner/WallImpact 0
 
-// [Ace] Lord knows I'd defile *that* ass.
 Executioner/Assassinate EXECASS
 
 Executioner/Unsheathe EXECOUT
