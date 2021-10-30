@@ -457,14 +457,14 @@ class HDExecutioner : HDWeapon
 				A_OverlayRotate(PSP_WEAPON, -10);
 				A_WeaponOffset(80, 0, WOF_KEEPY);
 			}
-			#### # 8
+			#### # 16
 			{
 				let plr = HDPlayerPawn(self);
 				if (plr.strength == 1.0)
 				{
 					return;
 				}
-				A_SetTics(int(clamp(tics / plr.strength, 2, 8)));
+				A_SetTics(int(clamp(tics / plr.strength, 3, 16)));
 			}
 			#### # 1
 			{
