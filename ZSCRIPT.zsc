@@ -285,7 +285,7 @@ class HDExecutioner : HDWeapon
 	private action bool A_IsValidTarget(Actor a)
 	{
 		let plr = HDPlayerPawn(invoker.owner);
-		if (!a || !a.bISMONSTER || a.bBOSS || !a.bSHOOTABLE || a.bINVULNERABLE || a.bFRIENDLY || a.Health <= 0 || a.bCORPSE || !plr || plr.bloodloss > 2000)
+		if (!a || !a.bISMONSTER || a.bBOSS || !a.bSHOOTABLE || a.bINVULNERABLE || a.bFRIENDLY || a.Health <= 0 || a.bCORPSE || !plr || plr.bloodloss > 2000 || !plr.CheckSight(a, SF_SEEPASTSHOOTABLELINES | SF_IGNOREVISIBILITY))
 		{
 			return false;
 		}
