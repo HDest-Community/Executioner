@@ -25,9 +25,9 @@ class HDExecutioner : HDWeapon
 {
 	enum ExecutionerProperties
 	{
-		DFProp_Flags, 
-		DFProp_Blood,
-		DFProp_Level
+		EXProp_Flags, 
+		EXProp_Blood,
+		EXProp_Level
 	}
 
 	override void Tick()
@@ -46,10 +46,10 @@ class HDExecutioner : HDWeapon
 
 		if (GetAge() % 35 == 0)
 		{
-			WeaponStatus[DFProp_Blood] = max(-200, WeaponStatus[DFProp_Blood] - 1);
-			bUNDROPPABLE = WeaponStatus[DFProp_Blood] < 0;
+			WeaponStatus[EXProp_Blood] = max(-200, WeaponStatus[EXProp_Blood] - 1);
+			bUNDROPPABLE = WeaponStatus[EXProp_Blood] < 0;
 			let plr = HDPlayerPawn(owner);
-			if (plr && WeaponStatus[DFProp_Blood] < 0)
+			if (plr && WeaponStatus[EXProp_Blood] < 0)
 			{
 				if (--ChantTicker <= 0)
 				{
@@ -61,7 +61,7 @@ class HDExecutioner : HDWeapon
 				}
 				else
 				{
-					plr.bloodloss += int(ceil(abs(WeaponStatus[DFProp_Blood]) / 40.0) * (plr.CountInv('HDBlues') > 0 ? 3 : 1));
+					plr.bloodloss += int(ceil(abs(WeaponStatus[EXProp_Blood]) / 40.0) * (plr.CountInv('HDBlues') > 0 ? 3 : 1));
 				}
 			}
 		}
@@ -101,7 +101,7 @@ class HDExecutioner : HDWeapon
 				"Competition is not healthy."
 			};
 			other.A_Log(str[random[defrand](0, str.Size() - 1)], true);
-			knife.WeaponStatus[DFProp_Level] += WeaponStatus[DFProp_Level] + 1;
+			knife.WeaponStatus[EXProp_Level] += WeaponStatus[EXProp_Level] + 1;
 			Destroy();
 			return;
 		}
@@ -133,7 +133,7 @@ class HDExecutioner : HDWeapon
 		sb.DrawRect(-23, -17, -13, 5);
 		sb.DrawRect(-36, -16, -2, 3);
 		sb.DrawRect(-38, -15, -2, 1);
-		sb.DrawWepNum(max(0, hdw.WeaponStatus[DFProp_Blood]), MaxBlood, alwaysprecise: true);
+		sb.DrawWepNum(max(0, hdw.WeaponStatus[EXProp_Blood]), MaxBlood, alwaysprecise: true);
 	}
 
 	action bool A_Stab(double dmg)
@@ -208,7 +208,7 @@ class HDExecutioner : HDWeapon
 		{
 			if (!invoker.Assassination)
 			{
-				invoker.WeaponStatus[DFProp_Blood] = int(min(MaxBlood, invoker.WeaponStatus[DFProp_Blood] + dmg * 3));
+				invoker.WeaponStatus[EXProp_Blood] = int(min(MaxBlood, invoker.WeaponStatus[EXProp_Blood] + dmg * 3));
 			}
 			invoker.Bloodied = true;
 			A_CheckKnifeFrame();
@@ -262,11 +262,11 @@ class HDExecutioner : HDWeapon
 			{
 				cost /= 4;
 			}
-			invoker.WeaponStatus[DFProp_Blood] -= cost;
-			if (invoker.WeaponStatus[DFProp_Blood] < 0)
+			invoker.WeaponStatus[EXProp_Blood] -= cost;
+			if (invoker.WeaponStatus[EXProp_Blood] < 0)
 			{
-				plr.bloodloss += abs(invoker.WeaponStatus[DFProp_Blood]) * (plr.CountInv('HDBlues') > 30 ? 2 : 1);
-				invoker.WeaponStatus[DFProp_Blood] = 0;
+				plr.bloodloss += abs(invoker.WeaponStatus[EXProp_Blood]) * (plr.CountInv('HDBlues') > 30 ? 2 : 1);
+				invoker.WeaponStatus[EXProp_Blood] = 0;
 			}
 
 			A_StartSound("Executioner/Assassinate", 7);
@@ -291,7 +291,7 @@ class HDExecutioner : HDWeapon
 		}
 
 		double warpDist = a.radius + radius + 4;
-		double useDist = HDCONST_ONEMETRE * (10 + 2 * invoker.WeaponStatus[DFProp_Level]) * (a is 'ShellShade' ? 10 : 1);
+		double useDist = HDCONST_ONEMETRE * (10 + 2 * invoker.WeaponStatus[EXProp_Level]) * (a is 'ShellShade' ? 10 : 1);
 		return level.IsPointInLevel(a.Vec3Angle(-warpDist, 0)) && !a.InStateSequence(a.CurState, a.FindState('falldown')) && plr.Distance3D(a) <= useDist && plr.Warp(a, -warpDist, 0, 0, 0, WARPF_INTERPOLATE | WARPF_TESTONLY);
 	}
 
@@ -388,7 +388,7 @@ class HDExecutioner : HDWeapon
 				A_CheckKnifeFrame();
 				A_GiveInventory('ExecutionerPassiveSpeed');
 				let speed = ExecutionerPassiveSpeed(FindInventory('ExecutionerPassiveSpeed'));
-				speed.Level = invoker.WeaponStatus[DFProp_Level];
+				speed.Level = invoker.WeaponStatus[EXProp_Level];
 				A_GiveInventory('ExecutionerPassiveInvisibility');
 				A_StartSound("Executioner/Unsheathe", CHAN_WEAPON);
 			}
@@ -416,7 +416,7 @@ class HDExecutioner : HDWeapon
 				A_OverlayRotate(PSP_WEAPON, 0);
 				A_WeaponOffset(60, 0, WOF_KEEPY);
 
-				int dmg = 60 + 20 * invoker.WeaponStatus[DFProp_Level];
+				int dmg = 60 + 20 * invoker.WeaponStatus[EXProp_Level];
 				if (HDPlayerPawn(self).strength > 1.0)
 				{
 					dmg = int(dmg * (1.2 ** (HDPlayerPawn(self).strength * 3)));
@@ -533,7 +533,7 @@ class HDExecutioner : HDWeapon
 			#### # 20;
 			#### # 0
 			{
-				bool fullyFed = invoker.WeaponStatus[DFProp_Blood] > MaxBlood - 100;
+				bool fullyFed = invoker.WeaponStatus[EXProp_Blood] > MaxBlood - 100;
 				if (fullyFed && !random(0, 2) && invoker.TotalSchlorped > 500)
 				{
 					A_StartSound("Executioner/Chant", 20, CHANF_LOCAL, 0.85, pitch: frandom(1.0, 1.05));
@@ -548,13 +548,13 @@ class HDExecutioner : HDWeapon
 			{
 				let plr = HDPlayerPawn(self);
 				int toFeed = random(80, 120);
-				invoker.WeaponStatus[DFProp_Blood] = min(MaxBlood, invoker.WeaponStatus[DFProp_Blood] + toFeed * 3);
+				invoker.WeaponStatus[EXProp_Blood] = min(MaxBlood, invoker.WeaponStatus[EXProp_Blood] + toFeed * 3);
 				invoker.TotalSchlorped += toFeed;
 				if (invoker.TotalSchlorped > 150)
 				{
 					A_GiveInventory("ExecutionerHealing", 80);
 					let healing = ExecutionerHealing(FindInventory('ExecutionerHealing'));
-					healing.Level = invoker.WeaponStatus[DFProp_Level];
+					healing.Level = invoker.WeaponStatus[EXProp_Level];
 				}
 				plr.bloodloss += toFeed * (plr.CountInv('HDBlues') > 30 ? 2 : 1);
 				plr.stunned = max(105, plr.stunned);
