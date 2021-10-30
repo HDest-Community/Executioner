@@ -208,7 +208,7 @@ class HDExecutioner : HDWeapon
 		{
 			if (!invoker.Assassination)
 			{
-				invoker.WeaponStatus[EXProp_Blood] = int(min(MaxBlood, invoker.WeaponStatus[EXProp_Blood] + dmg * 3));
+				invoker.WeaponStatus[EXProp_Blood] = int(min(MaxBlood, invoker.WeaponStatus[EXProp_Blood] + dmg * 2));
 			}
 			invoker.Bloodied = true;
 			A_CheckKnifeFrame();
@@ -419,7 +419,7 @@ class HDExecutioner : HDWeapon
 				int dmg = 60 + 20 * invoker.WeaponStatus[EXProp_Level];
 				if (HDPlayerPawn(self).strength > 1.0)
 				{
-					dmg = int(dmg * (1.2 ** (HDPlayerPawn(self).strength * 3)));
+					dmg = int(dmg * (1.6 ** HDPlayerPawn(self).strength));
 				}
 
 				bool success = A_Stab(dmg);
