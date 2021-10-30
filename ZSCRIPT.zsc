@@ -65,6 +65,25 @@ class HDExecutioner : HDWeapon
 				}
 			}
 		}
+
+		if (HighlightedActor && (!A_IsValidTarget(HighlightedActor) || ++HighlightTicker >= 18))
+		{
+			HighlightedActor = null;
+			HighlightTicker = 0;
+		}
+	}
+
+	override void DoEffect()
+	{
+		Super.DoEffect();
+
+		if (HighlightedActor)
+		{
+			for (int i = 0; i < 2; ++i)
+			{
+				HighlightedActor.A_SpawnParticle("DarkRed", SPF_RELATIVE | SPF_FULLBRIGHT, random(20, 35), random(4, 12), random(0, 360), frandom(0, HighlightedActor.radius), 0, HighlightedActor.height + 5 + random(8, -8), 0, 0, frandom(-1.0, -3.0), 0, 0, -0.3);
+			}
+		}
 	}
 
 	override void ActualPickup(Actor other, bool silent)
@@ -210,40 +229,36 @@ class HDExecutioner : HDWeapon
 		LineTrace(angle, HDCONST_ONEMETRE * 100, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
 		if (A_IsValidTarget(data.HitActor))
 		{
-			for (int i = 0; i < 2; ++i)
-			{
-				data.HitActor.A_SpawnParticle("DarkRed", SPF_RELATIVE | SPF_FULLBRIGHT, random(20, 35), random(4, 12), random(0, 360), frandom(0, data.HitActor.radius), 0, data.HitActor.height + 5 + random(8, -8), 0, 0, frandom(-1.0, -3.0), 0, 0, -0.3);
-			}
+			invoker.HighlightedActor = data.HitActor;
+			invoker.HighlightTicker = 0;
 		}
 	}
 
 	private action void A_Assassinate()
 	{
-		FLineTraceData data;
-		LineTrace(angle, HDCONST_ONEMETRE * 100, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
-		if (!A_IsValidTarget(data.HitActor))
+		if (!invoker.HighlightedActor)
 		{
 			return;
 		}
 
 		vector3 oldPos = pos;
-		if (Warp(data.HitActor, -(data.HitActor.radius + radius + 4), 0, 0, 0, WARPF_INTERPOLATE))
+		if (Warp(invoker.HighlightedActor, -(invoker.HighlightedActor.radius + radius + 4), 0, 0, 0, WARPF_INTERPOLATE))
 		{
 			vector3 newPos = pos;
 
 			SetXYZ(oldPos);
-			A_Face(data.HitActor, 0, 0, flags: FAF_MIDDLE);
+			A_Face(invoker.HighlightedActor, 0, 0, flags: FAF_MIDDLE);
 
 			// [Ace] And now we do a little hacking. I can't into vector math.
 			A_RailAttack(0, 0, 0, "", "", RGF_SILENT | RGF_NOPIERCING | RGF_CENTERZ, 1.0, null, spawnclass: 'ExecutionerTrailParticleSpawner');
 
 			SetXYZ(newPos);
-			A_Face(data.HitActor, 0, 0, flags: FAF_MIDDLE);
+			A_Face(invoker.HighlightedActor, 0, 0, flags: FAF_MIDDLE);
 
 			let plr = HDPlayerPawn(self);
 
-			int cost = data.HitActor.Health;
-			if (data.HitActor is 'Necromancer' || CountInv('HDZerk') > HDZerk.HDZERK_COOLOFF)
+			int cost = invoker.HighlightedActor.Health;
+			if (invoker.HighlightedActor is 'Necromancer' || CountInv('HDZerk') > HDZerk.HDZERK_COOLOFF)
 			{
 				cost /= 4;
 			}
@@ -270,14 +285,14 @@ class HDExecutioner : HDWeapon
 	private action bool A_IsValidTarget(Actor a)
 	{
 		let plr = HDPlayerPawn(invoker.owner);
-		if (!plr || plr.bloodloss > 2000 || !a || !a.bISMONSTER || a.bBOSS || !a.bSHOOTABLE || a.bINVULNERABLE || a.bFRIENDLY || a.Health <= 0 || a.bCORPSE)
+		if (!a || !a.bISMONSTER || a.bBOSS || !a.bSHOOTABLE || a.bINVULNERABLE || a.bFRIENDLY || a.Health <= 0 || a.bCORPSE || !plr || plr.bloodloss > 2000)
 		{
 			return false;
 		}
 
 		double warpDist = a.radius + radius + 4;
 		double useDist = HDCONST_ONEMETRE * (10 + 2 * invoker.WeaponStatus[DFProp_Level]) * (a is 'ShellShade' ? 10 : 1);
-		return level.IsPointInLevel(a.Vec3Angle(-warpDist, 0)) && !a.InStateSequence(a.CurState, a.FindState('falldown')) && Distance3D(a) <= useDist && Warp(a, -warpDist, 0, 0, 0, WARPF_INTERPOLATE | WARPF_TESTONLY);
+		return level.IsPointInLevel(a.Vec3Angle(-warpDist, 0)) && !a.InStateSequence(a.CurState, a.FindState('falldown')) && plr.Distance3D(a) <= useDist && plr.Warp(a, -warpDist, 0, 0, 0, WARPF_INTERPOLATE | WARPF_TESTONLY);
 	}
 
 	private action void A_RotateToNormal()
@@ -296,6 +311,8 @@ class HDExecutioner : HDWeapon
 	private int ChantTicker;
 	private bool Assassination;
 	private int TotalSchlorped;
+	private Actor HighlightedActor;
+	private int HighlightTicker;
 
 	Default
 	{
