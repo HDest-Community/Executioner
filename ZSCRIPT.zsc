@@ -249,6 +249,14 @@ class HDExecutioner : HDWeapon
 			SetXYZ(oldPos);
 			A_Face(invoker.HighlightedActor, 0, 0, flags: FAF_MIDDLE);
 
+			for (int i = 0; i < 200; ++i)
+			{
+				A_SpawnParticle(0xFF0000, SPF_RELATIVE | SPF_FULLBRIGHT, random(40, 105), frandom(2.0, 5.0), random(0, 359),
+					Radius, 0, frandom(0, Height),
+					1.0, 1.0, 0,
+					frandom(-0.08, -0.06), frandom(-0.01, -0.005), 0);
+			}
+
 			// [Ace] And now we do a little hacking. I can't into vector math.
 			A_RailAttack(0, 0, 0, "", "", RGF_SILENT | RGF_NOPIERCING | RGF_CENTERZ, 1.0, null, spawnclass: 'ExecutionerTrailParticleSpawner');
 
