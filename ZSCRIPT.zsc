@@ -313,6 +313,21 @@ class HDExecutioner : HDWeapon
 		}
 	}
 
+	private action void A_GiveBonuses()
+	{
+		if (!invoker.SpeedBonus)
+		{
+			A_GiveInventory('ExecutionerPassiveSpeed');
+			invoker.SpeedBonus = ExecutionerPassiveSpeed(FindInventory('ExecutionerPassiveSpeed'));
+		}
+		if (!invoker.InvisBonus)
+		{
+			A_GiveInventory('ExecutionerPassiveInvisibility');
+			invoker.InvisBonus = ExecutionerPassiveInvisibility(FindInventory('ExecutionerPassiveInvisibility'));
+		}
+		invoker.SpeedBonus.Level = invoker.WeaponStatus[EXProp_Level];
+	}
+
 	const MaxBlood = 3000;
 	private bool HasAttacked;
 	private bool Bloodied;
@@ -321,6 +336,9 @@ class HDExecutioner : HDWeapon
 	private int TotalSchlorped;
 	private Actor HighlightedActor;
 	private int HighlightTicker;
+
+	private ExecutionerPassiveSpeed SpeedBonus;
+	private ExecutionerPassiveInvisibility InvisBonus;
 
 	Default
 	{
@@ -388,17 +406,14 @@ class HDExecutioner : HDWeapon
 					A_MuzzleClimb(frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(0.0, 1.0));
 					plr.woundcount += 3;
 				}
-
-				A_GiveInventory('ExecutionerPassiveSpeed');
-				let speed = ExecutionerPassiveSpeed(FindInventory('ExecutionerPassiveSpeed'));
-				speed.Level = invoker.WeaponStatus[EXProp_Level];
-				A_GiveInventory('ExecutionerPassiveInvisibility');
+				A_GiveBonuses();
 			}
 			Goto ReadyEnd;
 		Select0:
 			EXEC A 0
 			{
 				A_CheckKnifeFrame();
+				A_GiveBonuses();
 				A_StartSound("Executioner/Unsheathe", CHAN_WEAPON);
 			}
 			EXEC # 1 A_Raise(16);
