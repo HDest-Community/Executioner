@@ -258,7 +258,7 @@ class HDExecutioner : HDWeapon
 			}
 
 			// [Ace] And now we do a little hacking. I can't into vector math.
-			A_RailAttack(0, 0, 0, "", "", RGF_SILENT | RGF_NOPIERCING | RGF_CENTERZ, 1.0, null, spawnclass: 'ExecutionerTrailParticleSpawner');
+			A_RailAttack(0, 0, 0, "", "", RGF_SILENT | RGF_NOPIERCING | RGF_CENTERZ, 2.0, null, spawnclass: 'ExecutionerTrailParticleSpawner', sparsity: 2.0);
 
 			SetXYZ(newPos);
 			A_Face(invoker.HighlightedActor, 0, 0, flags: FAF_MIDDLE);
