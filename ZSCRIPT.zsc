@@ -396,12 +396,14 @@ class HDExecutioner : HDWeapon
 				if (zerk > 0 && !invoker.bUNTOSSABLE)
 				{
 					invoker.bUNTOSSABLE = true;
+					invoker.bDONTNULL = true;
 					A_StartSound("misc/bulletflesh", CHAN_AUTO);
 					A_MuzzleClimb(frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(0.0, 1.0));
 				}
 				else if (zerk <= 0 && invoker.bUNTOSSABLE)
 				{
 					invoker.bUNTOSSABLE = false;
+					invoker.bDONTNULL = false;
 					A_StartSound("misc/bulletflesh", CHAN_AUTO);
 					A_MuzzleClimb(frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(0.0, 1.0));
 					plr.woundcount += 3;
