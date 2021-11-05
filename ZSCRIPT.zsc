@@ -43,6 +43,11 @@ class HDExecutioner : HDWeapon
 		{
 			Bloodied = false;
 		}
+	}
+
+	override void DoEffect()
+	{
+		Super.DoEffect();
 
 		if (GetAge() % 35 == 0)
 		{
@@ -71,11 +76,6 @@ class HDExecutioner : HDWeapon
 			HighlightedActor = null;
 			HighlightTicker = 0;
 		}
-	}
-
-	override void DoEffect()
-	{
-		Super.DoEffect();
 
 		if (HighlightedActor)
 		{
@@ -110,8 +110,7 @@ class HDExecutioner : HDWeapon
 
 	override void DetachFromOwner()
 	{
-		owner.A_TakeInventory('ExecutionerPassiveSpeed');
-		owner.A_TakeInventory('ExecutionerPassiveInvisibility');
+		A_TakeBonuses();
 		Super.DetachFromOwner();
 	}
 
@@ -328,6 +327,18 @@ class HDExecutioner : HDWeapon
 		invoker.SpeedBonus.Level = invoker.WeaponStatus[EXProp_Level];
 	}
 
+	private action void A_TakeBonuses()
+	{
+		if (invoker.SpeedBonus)
+		{
+			invoker.owner.A_TakeInventory('ExecutionerPassiveSpeed');
+		}
+		if (invoker.InvisBonus)
+		{
+			invoker.owner.A_TakeInventory('ExecutionerPassiveInvisibility');
+		}
+	}
+
 	const MaxBlood = 3000;
 	private bool HasAttacked;
 	private bool Bloodied;
@@ -408,7 +419,15 @@ class HDExecutioner : HDWeapon
 					A_MuzzleClimb(frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(0.0, 1.0));
 					plr.woundcount += 3;
 				}
-				A_GiveBonuses();
+
+				if (invoker.WeaponStatus[EXProp_Blood] > 0)
+				{
+					A_GiveBonuses();
+				}
+				else
+				{
+					A_TakeBonuses();
+				}
 			}
 			Goto ReadyEnd;
 		Select0:
@@ -423,8 +442,7 @@ class HDExecutioner : HDWeapon
 		Deselect0:
 			EXEC A 0
 			{
-				A_TakeInventory('ExecutionerPassiveSpeed');
-				A_TakeInventory('ExecutionerPassiveInvisibility');
+				A_TakeBonuses();
 				invoker.bUNTOSSABLE = false;
 				A_CheckKnifeFrame();
 			}
