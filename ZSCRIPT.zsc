@@ -504,11 +504,7 @@ class HDExecutioner : HDWeapon
 			#### # 16
 			{
 				let plr = HDPlayerPawn(self);
-				if (plr.strength == 1.0)
-				{
-					return;
-				}
-				A_SetTics(int(clamp(tics / plr.strength, 3, 16)));
+				A_SetTics(int(clamp(tics / plr.strength, 5, 30)));
 			}
 			#### # 1
 			{
