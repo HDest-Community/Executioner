@@ -299,7 +299,7 @@ class HDExecutioner : HDWeapon
 
 		double warpDist = a.radius + radius + 4;
 		double useDist = HDCONST_ONEMETRE * (10 + 2 * invoker.WeaponStatus[EXProp_Level]) * (a is 'ShellShade' ? 10 : 1);
-		return level.IsPointInLevel(a.Vec3Angle(-warpDist, 0)) && !a.InStateSequence(a.CurState, a.FindState('falldown')) && plr.Distance3D(a) <= useDist && plr.CheckMove(a.Vec2Angle(-warpDist, 0));
+		return level.IsPointInLevel(a.Vec3Angle(-warpDist, 0)) && !a.InStateSequence(a.CurState, a.FindState('falldown')) && plr.Distance3D(a) <= useDist && plr.CheckPosition(a.Vec2Angle(-warpDist, 0));
 	}
 
 	private action void A_RotateToNormal()
