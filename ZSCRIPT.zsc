@@ -51,7 +51,7 @@ class HDExecutioner : HDWeapon
 
 		if (GetAge() % 35 == 0)
 		{
-			WeaponStatus[EXProp_Blood] = max(-200, WeaponStatus[EXProp_Blood] - 1);
+			WeaponStatus[EXProp_Blood] = max(-800, WeaponStatus[EXProp_Blood] - 1);
 			bUNDROPPABLE = WeaponStatus[EXProp_Blood] < 0;
 			let plr = HDPlayerPawn(owner);
 			if (plr && WeaponStatus[EXProp_Blood] < 0)
@@ -67,7 +67,7 @@ class HDExecutioner : HDWeapon
 				}
 				else
 				{
-					plr.bloodloss += int(ceil(abs(WeaponStatus[EXProp_Blood]) / 40.0) * (plr.CountInv('HDBlues') > 0 ? 3 : 1));
+					plr.bloodloss += int(ceil(abs(WeaponStatus[EXProp_Blood]) / 100.0) * (plr.CountInv('HDBlues') > 0 ? 3 : 1));
 				}
 			}
 		}
