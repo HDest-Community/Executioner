@@ -56,6 +56,7 @@ class HDExecutioner : HDWeapon
 			let plr = HDPlayerPawn(owner);
 			if (plr && WeaponStatus[EXProp_Blood] < 0)
 			{
+				Bloodied = false;
 				if (--ChantTicker <= 0)
 				{
 					plr.A_SetBlend("7a 3a 18", 0.2, 4);
