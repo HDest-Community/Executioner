@@ -600,6 +600,7 @@ class HDExecutioner : HDWeapon
 				plr.bloodloss += toFeed * (plr.CountInv('HDBlues') > 30 ? 2 : 1);
 				plr.stunned = max(105, plr.stunned);
 				A_StartSound("Executioner/Schlorp", CHAN_WEAPON, pitch: frandom(0.9, 1.2));
+				invoker.Bloodied = true;
 			}
 			Loop;
 		EndSchlorp:
