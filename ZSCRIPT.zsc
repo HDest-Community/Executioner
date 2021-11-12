@@ -436,7 +436,7 @@ class HDExecutioner : HDWeapon
 			{
 				A_CheckKnifeFrame();
 				A_GiveBonuses();
-				A_StartSound("Executioner/Unsheathe", CHAN_WEAPON);
+				A_StartSound("Executioner/Unsheathe", 6);
 			}
 			EXEC # 1 A_Raise(16);
 			Wait;
