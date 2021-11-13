@@ -629,8 +629,11 @@ class ExecutionerHealing : HDDrug
 	{
 		Super.DoEffect();
 		let plr = HDPlayerPawn(owner);
-		plr.beatmax = min(plr.beatmax, 10);
-		plr.bloodpressure = max(plr.bloodpressure, 50);
+		if (plr)
+		{
+			plr.beatmax = min(plr.beatmax, 10);
+			plr.bloodpressure = max(plr.bloodpressure, 50);
+		}
 	}
 
 	override void OnHeartbeat(HDPlayerPawn hdp)
