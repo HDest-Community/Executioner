@@ -42,6 +42,7 @@ class HDExecutioner : HDWeapon
 		if (!owner)
 		{
 			Bloodied = false;
+			GraceTicker = 0;
 		}
 	}
 
@@ -56,18 +57,22 @@ class HDExecutioner : HDWeapon
 			let plr = HDPlayerPawn(owner);
 			if (plr && WeaponStatus[EXProp_Blood] < 0)
 			{
-				Bloodied = false;
-				if (--ChantTicker <= 0)
+				GraceTicker++;
+				if (GraceTicker >= 5)
 				{
-					plr.A_SetBlend("7a 3a 18", 0.2, 4);
-					plr.A_MuzzleClimb((0, frandom(1.0, 1.5)), (0, 0), (0, 0), (0, 0));
-					plr.A_StartSound(plr.medsound, CHAN_VOICE);
-					plr.A_StartSound("Executioner/Chant", 20, CHANF_LOCAL, 0.85, pitch: frandom(1.0, 1.05));
-					ChantTicker = 120;
-				}
-				else
-				{
-					plr.bloodloss += int(ceil(abs(WeaponStatus[EXProp_Blood]) / 100.0) * (plr.CountInv('HDBlues') > 0 ? 3 : 1));
+					Bloodied = false;
+					if (--ChantTicker <= 0)
+					{
+						plr.A_SetBlend("7a 3a 18", 0.2, 4);
+						plr.A_MuzzleClimb((0, frandom(1.0, 1.5)), (0, 0), (0, 0), (0, 0));
+						plr.A_StartSound(plr.medsound, CHAN_VOICE);
+						plr.A_StartSound("Executioner/Chant", 20, CHANF_LOCAL, 0.85, pitch: frandom(1.0, 1.05));
+						ChantTicker = 120;
+					}
+					else
+					{
+						plr.bloodloss += int(ceil(abs(WeaponStatus[EXProp_Blood]) / 100.0) * (plr.CountInv('HDBlues') > 0 ? 3 : 1));
+					}
 				}
 			}
 		}
@@ -348,6 +353,7 @@ class HDExecutioner : HDWeapon
 	private int TotalSchlorped;
 	private Actor HighlightedActor;
 	private int HighlightTicker;
+	private int GraceTicker;
 
 	private ExecutionerPassiveSpeed SpeedBonus;
 	private ExecutionerPassiveInvisibility InvisBonus;
