@@ -278,7 +278,7 @@ class HDExecutioner : HDWeapon
 			invoker.WeaponStatus[EXProp_Blood] -= cost;
 			if (invoker.WeaponStatus[EXProp_Blood] < 0)
 			{
-				plr.bloodloss += abs(invoker.WeaponStatus[EXProp_Blood]) * (plr.CountInv('HDBlues') > 30 ? 2 : 1);
+				plr.bloodloss += abs(invoker.WeaponStatus[EXProp_Blood]) * (plr.CountInv('HDBlues') > 30 ? 4 : 1);
 				invoker.WeaponStatus[EXProp_Blood] = 0;
 			}
 
@@ -572,7 +572,7 @@ class HDExecutioner : HDWeapon
 				int toInflict = int(random(2, random(4, (!random(0, 2) ? 15 : 8))));
 				if (plr.CountInv('HDBlues') > 30)
 				{
-					toInflict *= 4;
+					toInflict *= 6;
 				}
 				plr.woundcount += toInflict;
 			}
@@ -603,7 +603,7 @@ class HDExecutioner : HDWeapon
 					let healing = ExecutionerHealing(FindInventory('ExecutionerHealing'));
 					healing.Level = invoker.WeaponStatus[EXProp_Level];
 				}
-				plr.bloodloss += toFeed * (plr.CountInv('HDBlues') > 30 ? 2 : 1);
+				plr.bloodloss += toFeed * (plr.CountInv('HDBlues') > 30 ? 4 : 1);
 				plr.stunned = max(105, plr.stunned);
 				A_StartSound("Executioner/Schlorp", CHAN_WEAPON, pitch: frandom(0.9, 1.2));
 				invoker.Bloodied = true;
