@@ -107,7 +107,7 @@ class HDExecutioner : HDWeapon
 				"Competition is not healthy."
 			};
 			other.A_Log(str[random[execrand](0, str.Size() - 1)], true);
-			knife.WeaponStatus[EXProp_Level] += WeaponStatus[EXProp_Level] + 1;
+			knife.WeaponStatus[EXProp_Level] = min(4, knife.WeaponStatus[EXProp_Level] + WeaponStatus[EXProp_Level] + 1);
 			Destroy();
 			return;
 		}
@@ -213,7 +213,7 @@ class HDExecutioner : HDWeapon
 		{
 			if (!invoker.Assassination)
 			{
-				invoker.WeaponStatus[EXProp_Blood] = int(min(MaxBlood, invoker.WeaponStatus[EXProp_Blood] + dmg * 2));
+				invoker.WeaponStatus[EXProp_Blood] = int(min(MaxBlood, invoker.WeaponStatus[EXProp_Blood] + min(250, dmg * 2)));
 			}
 			invoker.Bloodied = true;
 			A_CheckKnifeFrame();
@@ -304,7 +304,7 @@ class HDExecutioner : HDWeapon
 		}
 
 		double warpDist = a.radius + radius + 4;
-		double useDist = HDCONST_ONEMETRE * (10 + 5 * invoker.WeaponStatus[EXProp_Level]) * (a is 'ShellShade' ? 10 : 1);
+		double useDist = HDCONST_ONEMETRE * (10 + 5 * invoker.WeaponStatus[EXProp_Level]) * (a is 'ShellShade' ? 5 : 1);
 		return level.IsPointInLevel(a.Vec3Angle(-warpDist, 0)) && !a.InStateSequence(a.CurState, a.FindState('falldown')) && plr.Distance3D(a) <= useDist && plr.CheckPosition(a.Vec2Angle(-warpDist, 0));
 	}
 
@@ -467,7 +467,7 @@ class HDExecutioner : HDWeapon
 				A_OverlayRotate(PSP_WEAPON, 0);
 				A_WeaponOffset(60, 0, WOF_KEEPY);
 
-				int dmg = 40 + 20 * invoker.WeaponStatus[EXProp_Level];
+				int dmg = 40 + 10 * invoker.WeaponStatus[EXProp_Level];
 				if (HDPlayerPawn(self).strength > 1.0)
 				{
 					dmg = int(dmg * (1.6 ** HDPlayerPawn(self).strength));
