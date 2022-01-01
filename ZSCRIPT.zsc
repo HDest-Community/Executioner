@@ -206,6 +206,7 @@ class HDExecutioner : HDWeapon
 		}
 
 		int ret = 1;
+		bool isDraining = false;
 		if (pActor is 'HDHumanoid' && pActor.Health > 0)
 		{
 			if (PressingFiremode() && PressingFire() && !invoker.Assassination)
@@ -217,14 +218,15 @@ class HDExecutioner : HDWeapon
 				A_ChangeVelocity(0.5, flags: CVF_RELATIVE);
 				A_StartSound("Executioner/Schlorp", CHAN_WEAPON, CHANF_OVERLAP, pitch: frandom(0.9, 1.2));
 				ret = 2;
+				isDraining = true;
 			}
 			invoker.WeaponStatus[EXProp_Blood] = min(MaxBlood, invoker.WeaponStatus[EXProp_Blood] + random(10, 20));
 			invoker.Bloodied = true;
 			A_CheckKnifeFrame();
 		}
 
-		pActor.DamageMobj(invoker, self, int(dmg), 'Melee', DMG_FORCED);
-		if (pActor.Health <= 0)
+		pActor.DamageMobj(invoker, self, int(dmg), 'Melee', DMG_FORCED | DMG_THRUSTLESS);
+		if (isDraining && pActor.Health <= 0)
 		{
 			ret = 3;
 		}
