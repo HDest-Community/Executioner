@@ -628,7 +628,7 @@ class HDExecutioner : HDWeapon
 					let healing = ExecutionerHealing(FindInventory('ExecutionerHealing'));
 					healing.Level = invoker.WeaponStatus[EXProp_Level];
 				}
-				plr.bloodloss += toFeed * (plr.CountInv('HDBlues') > 30 ? 4 : 1);
+				plr.bloodloss += toFeed * (plr.CountInv('HDBlues') > 30 ? 8 : 1);
 				plr.stunned = max(105, plr.stunned);
 				A_StartSound("Executioner/Schlorp", CHAN_WEAPON, pitch: frandom(0.9, 1.2));
 				invoker.Bloodied = true;
