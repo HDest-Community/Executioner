@@ -71,7 +71,7 @@ class HDExecutioner : HDWeapon
 					}
 					else
 					{
-						plr.bloodloss += int(ceil(abs(WeaponStatus[EXProp_Blood]) / 100.0) * (plr.CountInv('HDBlues') > 0 ? 3 : 1));
+						plr.bloodloss += int(ceil(abs(WeaponStatus[EXProp_Blood]) / 100.0) * (plr.CountInv('HDBlues') > 0 ? 4 : 1));
 					}
 				}
 			}
@@ -106,7 +106,25 @@ class HDExecutioner : HDWeapon
 				"There can be only one.",
 				"Competition is not healthy."
 			};
-			other.A_Log(str[random[execrand](0, str.Size() - 1)], true);
+			static const string fullStr[] =
+			{
+				"I'm already at my maximum power.",
+				"Pathetic.",
+				"My powers cannot go beyond this.",
+				"This is the strongest I've ever felt.",
+				"This power is no match for mine.",
+				"I didn't even feel anything.",
+				"Useless."
+			};
+			
+			if (knife.WeaponStatus[EXProp_Level] < 4)
+			{
+				other.A_Log(str[random[execrand](0, str.Size() - 1)], true);
+			}
+			else
+			{
+				other.A_Log(fullStr[random[execrand](0, fullStr.Size() - 1)], true);
+			}
 			knife.WeaponStatus[EXProp_Level] = min(4, knife.WeaponStatus[EXProp_Level] + WeaponStatus[EXProp_Level] + 1);
 			Destroy();
 			return;
