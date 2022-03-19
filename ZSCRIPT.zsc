@@ -53,13 +53,18 @@ class HDExecutioner : HDWeapon
 		if (GetAge() % 35 == 0)
 		{
 			WeaponStatus[EXProp_Blood] = max(-800, WeaponStatus[EXProp_Blood] - 1);
-			bUNDROPPABLE = WeaponStatus[EXProp_Blood] < 0;
+			if (WeaponStatus[EXProp_Blood] > 0)
+			{
+				bUNDROPPABLE = false;
+			}
+			
 			let plr = HDPlayerPawn(owner);
-			if (plr && WeaponStatus[EXProp_Blood] < 0)
+			if (plr && WeaponStatus[EXProp_Blood] <= 0)
 			{
 				GraceTicker++;
 				if (GraceTicker >= 5)
 				{
+					bUNDROPPABLE = true;
 					Bloodied = false;
 					if (--ChantTicker <= 0)
 					{
