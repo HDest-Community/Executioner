@@ -719,10 +719,18 @@ class ExecutionerPassiveSpeed : PowerSpeed
 
 class ExecutionerPassiveInvisibility : PowerInvisibility 
 {
+	override void DoEffect()
+	{
+		owner.bShadow = true;
+		owner.bGhost = true;
+		owner.bCantSeek = true;
+		Super.DoEffect();
+	}
+
 	override void EndEffect()
 	{
 		Super.EndEffect();
-		if (owner != NULL)
+		if (owner)
 		{
 			owner.bShadow = false;
 			owner.bGhost = false;
@@ -730,6 +738,7 @@ class ExecutionerPassiveInvisibility : PowerInvisibility
 			owner.A_SetRenderStyle(1, STYLE_Normal);
 		}
 	}
+	
 	Default
 	{
 		Powerup.Duration 0xFFFFFF;
