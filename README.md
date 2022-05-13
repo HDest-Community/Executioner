@@ -1,3 +1,8 @@
+### Important
+---
+- This mod requires [AceCoreLib](https://gitlab.com/accensi/hd-addons/acecorelib).
+- Supports ACL's spawn scaling.
+
 ### Notes
 ---
 - Loadout code is `exe`.
