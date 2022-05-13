@@ -12,7 +12,7 @@ class ExecutionerHandler : EventHandler
 		switch (e.Replacement.GetClassName())
 		{
 			case 'Lumberjack':
-				if (random[execrand]() <= 64)
+				if (random[execrand]() <= AceCore.GetScaledChance(16, 64, acl_spawnscale_min, acl_spawnscale_max))
 				{
 					e.Replacement = "HDExecutioner";
 				}
