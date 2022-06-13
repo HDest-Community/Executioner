@@ -438,15 +438,15 @@ class HDExecutioner : HDWeapon
 				let psp = player.GetPSprite(PSP_WEAPON);
 				A_RotateToNormal();
 
-				int zerk = CountInv('HDZerk');
-				if (zerk > HDZerk.HDZERK_COOLOFF && !invoker.bUNTOSSABLE)
+				bool isZerk = HDZerk.IsZerk(self);
+				if (isZerk && !invoker.bUNTOSSABLE)
 				{
 					invoker.bUNTOSSABLE = true;
 					invoker.bDONTNULL = true;
 					A_StartSound("misc/bulletflesh", CHAN_AUTO);
 					A_MuzzleClimb(frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(0.0, 1.0));
 				}
-				else if (invoker.bUNTOSSABLE)
+				else if (!isZerk && invoker.bUNTOSSABLE)
 				{
 					invoker.bUNTOSSABLE = false;
 					invoker.bDONTNULL = false;
