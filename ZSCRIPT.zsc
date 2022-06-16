@@ -50,6 +50,21 @@ class HDExecutioner : HDWeapon
 	{
 		Super.DoEffect();
 
+		if (owner.FindInventory('HDBlursphere'))
+		{
+			if (bUNDROPPABLE)
+			{
+				owner.A_Log("You don't need that thing.");
+				owner.A_TakeInventory('HDBlursphere');
+			}
+			else
+			{
+				owner.A_Log("I am not going to stay with you with that thing around.");
+				owner.DropInventory(self);
+			}
+			return;
+		}
+
 		if (GetAge() % 35 == 0)
 		{
 			WeaponStatus[EXProp_Blood] = max(-800, WeaponStatus[EXProp_Blood] - 1);
@@ -134,6 +149,13 @@ class HDExecutioner : HDWeapon
 			Destroy();
 			return;
 		}
+
+		if (other.FindInventory('HDBlursphere'))
+		{
+			other.A_Log("Get rid of that... thing first.");
+			return;
+		}
+
 		Super.ActualPickup(other, silent);
 	}
 
