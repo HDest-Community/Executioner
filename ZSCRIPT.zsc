@@ -281,7 +281,7 @@ class HDExecutioner : HDWeapon
 	private action void A_HighlightTarget()
 	{
 		FLineTraceData data;
-		LineTrace(angle, HDCONST_ONEMETRE * 100, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
+		LineTrace(angle, HDCONST_ONEMETRE * 100, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height * HDCONST_EYEHEIGHT, data: data);
 		if (A_IsValidTarget(data.HitActor))
 		{
 			invoker.HighlightedActor = data.HitActor;
