@@ -91,7 +91,7 @@ class HDExecutioner : HDWeapon
 					}
 					else
 					{
-						plr.bloodloss += int(ceil(abs(WeaponStatus[EXProp_Blood]) / 100.0) * (plr.CountInv('HDBlues') > 0 ? 4 : 1));
+						plr.bloodloss += int(ceil(abs(WeaponStatus[EXProp_Blood]) / 100.0) * (plr.CountInv('HealingMagic') > 0 ? 4 : 1));
 					}
 				}
 			}
@@ -328,7 +328,7 @@ class HDExecutioner : HDWeapon
 			invoker.WeaponStatus[EXProp_Blood] -= cost;
 			if (invoker.WeaponStatus[EXProp_Blood] < 0)
 			{
-				plr.bloodloss += abs(invoker.WeaponStatus[EXProp_Blood]) * (plr.CountInv('HDBlues') > 30 ? 4 : 1);
+				plr.bloodloss += abs(invoker.WeaponStatus[EXProp_Blood]) * (plr.CountInv('HealingMagic') > 30 ? 4 : 1);
 				invoker.WeaponStatus[EXProp_Blood] = 0;
 			}
 
@@ -474,7 +474,7 @@ class HDExecutioner : HDWeapon
 					invoker.bDONTNULL = false;
 					A_StartSound("misc/bulletflesh", CHAN_AUTO);
 					A_MuzzleClimb(frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(0.0, 1.0));
-					plr.woundcount += 3;
+					plr.OldWoundCount  += 3;
 				}
 
 				if (invoker.WeaponStatus[EXProp_Blood] > 0)
@@ -640,11 +640,11 @@ class HDExecutioner : HDWeapon
 				A_StartSound(plr.medsound, CHAN_VOICE);
 
 				int toInflict = int(random(2, random(4, (!random(0, 2) ? 15 : 8))));
-				if (plr.CountInv('HDBlues') > 30)
+				if (plr.CountInv('HealingMagic') > 30)
 				{
 					toInflict *= 6;
 				}
-				plr.woundcount += toInflict;
+				plr.OldWoundCount  += toInflict;
 			}
 		Schlorp:
 			#### # 20;
@@ -673,7 +673,7 @@ class HDExecutioner : HDWeapon
 					let healing = ExecutionerHealing(FindInventory('ExecutionerHealing'));
 					healing.Level = invoker.WeaponStatus[EXProp_Level];
 				}
-				plr.bloodloss += toFeed * (plr.CountInv('HDBlues') > 30 ? 8 : 1);
+				plr.bloodloss += toFeed * (plr.CountInv('HealingMagic') > 30 ? 8 : 1);
 				plr.stunned = max(105, plr.stunned);
 				A_StartSound("Executioner/Schlorp", CHAN_WEAPON, pitch: frandom(0.9, 1.2));
 				invoker.Bloodied = true;
