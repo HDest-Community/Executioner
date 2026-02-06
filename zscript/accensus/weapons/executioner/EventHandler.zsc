@@ -1,0 +1,20 @@
+class ExecutionerHandler : EventHandler
+{
+	override void CheckReplacement(ReplaceEvent e)
+	{
+		if (!e.Replacement)
+		{
+			return;
+		}
+
+		switch (e.Replacement.GetClassName())
+		{
+			case 'Lumberjack':
+				if (random[execrand]() <= AceCore.GetScaledChance(16, 64, acl_spawnscale_min, acl_spawnscale_max))
+				{
+					e.Replacement = "HDExecutioner";
+				}
+				break;
+		}
+	}
+}

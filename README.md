@@ -1,10 +1,8 @@
-### Important
----
-- This mod requires [AceCoreLib](https://github.com/HDest-Community/AceCoreLib).
-- Supports ACL's spawn scaling.
+# Executioner
+_A bloodthirsty blade, originally made by Accensus, now maintained by the community._  
+_Requires [AceCoreLib](https://github.com/HDest-Community/AceCoreLib)._
 
-### Notes
----
+## Notes
 - Loadout code is `exe`.
 - The bar on the HUD is the hunger. If you hear a lewd sound and notice a sudden flinch, congratulations, you've become food for the knife. This notification occurs every two minutes once the process begins. It also plays sometimes when you've fully fed the knife. [maniacal stabbing]
 - Hunger can be satiated in two ways: stabbing yourself and holding the knife inside or doing the same but to enemies.
@@ -14,3 +12,14 @@
 - The hungrier the knife gets, the faster you will lose blood. You cannot drop it once it starts feeding on you.
 - If within 10m of a certain enemies (scales with level), an indicator will appear above them if they are being aimed at, indicating that you can assassinate them using altfire. The cost for this action will be deducted from the blood siphoned by the knife. If you don't have enough, it will be taken from you directly.
 - It doesn't want to let go. It cannot be disarmed.
+
+## Credits
+Code:
+- Accensus
+
+Sprites:
+- Mor'ladim
+
+Sounds:
+- Swinging: CoD Black Ops Declassified (https://www.sounds-resource.com/playstation_vita/callofdutyblackopsdeclassified/sound/21685/)
+- Schlorp: Soul Nomad (Nippon Ichi Software)
