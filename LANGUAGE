@@ -1,0 +1,6 @@
+[enu default]
+
+// Merchant Store Entries
+MERCH_CAT_EXECUTIONER    = "AceCorp";
+MERCH_TAG_EXECUTIONER    = "Executioner";
+MERCH_FLAVOR_EXECUTIONER = "Just get it the fuck away from me. This thing is fucking cursed.";
