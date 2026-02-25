@@ -1,0 +1,5 @@
+// Weapon Spawn Pools
+addSpawnTableSingleEntry => { "tableName": "ChainsawReplaces", "name": "HDExecutioner", "weight": "0.15625", "persists": "true" }
+
+// Merchant Store Entries
+newMerchantStoreItem => { "enabled": "#hdm_enable_executioner", "type": "weapon", "category": "$MERCH_CAT_EXECUTIONER", "item": "HDExecutioner", "icon": "EXECZ0", "displayName": "$MERCH_TAG_EXECUTIONER", "basePrice": "500", "flavorText": "$MERCH_FLAVOR_EXECUTIONER" }
